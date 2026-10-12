@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Editorial Desk &bull; Root Node</title>
+  <meta name="description" content="Reach the editorial team, report errata, or submit technical feedback to Root Node.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+      </a>
+      <nav class="primary-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link">Articles</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link active">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="blog.html" class="btn-nav-search">Search</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <span class="hero-meta-badge">Editorial Inquiries &bull; Errata Desk</span>
+        <h1 class="page-title">Direct Correspondence</h1>
+        <p class="page-subtitle">
+          Have feedback on a protocol explanation, discovered an edge-case errata in one of our guides, or wish to propose an architectural monograph? Send a message directly to our desk.
+        </p>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="contact-grid">
+        <div>
+          <h2 style="font-family: var(--font-serif); font-size: 1.65rem; margin-bottom: 1rem; color: var(--text-primary);">Editorial Protocols</h2>
+          <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7;">
+            We read every thoughtful technical note submitted by our readers. If you are reporting a factual discrepancy or broken link, kindly cite the specific article number and include your terminal output or primary specification reference.
+          </p>
+
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="font-family: var(--font-mono); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-sage); margin-bottom: 0.75rem;">Direct Channels</h3>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+              <strong>Technical Corrections:</strong> <code>errata@rootnode.internal</code>
+            </p>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+              <strong>Privacy Inquiries:</strong> <code>privacy@rootnode.internal</code>
+            </p>
+            <p style="font-size: 0.95rem; color: var(--text-secondary);">
+              <strong>Response Time:</strong> Typically 48–72 operational hours
+            </p>
+          </div>
+
+          <p style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono);">
+            PGP/GPG Public Key available upon request for sensitive disclosure.
+          </p>
+        </div>
+
+        <div>
+          <form id="contact-form" style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 2rem;">
+            <div class="form-group">
+              <label for="contact-name" class="form-label">Your Name</label>
+              <input type="text" id="contact-name" class="form-input" placeholder="e.g. Julian Vance" required>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-email" class="form-label">Email Address</label>
+              <input type="email" id="contact-email" class="form-input" placeholder="e.g. name@domain.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-subject" class="form-label">Subject Line</label>
+              <input type="text" id="contact-subject" class="form-input" placeholder="e.g. Technical Note regarding TCP Windowing in Post 1">
+            </div>
+
+            <div class="form-group">
+              <label for="contact-message" class="form-label">Message & Technical Details</label>
+              <textarea id="contact-message" class="form-textarea" placeholder="Provide context, references, or your inquiry..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%;">Transmit Message</button>
+            <div id="form-feedback" class="form-feedback"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; <span class="current-year">2026</span> Root Node. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="disclaimer.html">Disclaimer</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

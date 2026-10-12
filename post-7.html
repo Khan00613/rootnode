@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What Is Cybersecurity? Essential Concepts for Everyday Users &bull; Root Node</title>
+  <meta name="description" content="A practical, defensive guide to cybersecurity: the CIA triad, threat modeling, social engineering, credential hygiene, network segmentation, and 3-2-1 backups.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+  <div id="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+      </a>
+      <nav class="primary-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link active">Articles</a>
+        <a href="blog.html?cat=cybersecurity" class="nav-link">Cybersecurity</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="blog.html" class="btn-nav-search">Search</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <header class="article-header-section">
+      <div class="container container-narrow">
+        <nav class="breadcrumb-nav">
+          <a href="index.html">Home</a> <span>/</span> <a href="blog.html">Articles</a> <span>/</span> <span>Post 07</span>
+        </nav>
+        <span class="post-category-tag">Cybersecurity // Defensive Engineering</span>
+        <h1 class="article-hero-title">What Is Cybersecurity? Essential Concepts for Everyday Users</h1>
+        <p class="article-standfirst">
+          Cybersecurity is not an assortment of antivirus badges or impenetrable black boxes. It is a systematic practice of threat modeling, defense-in-depth, and reducing operational attack surfaces.
+        </p>
+        <div class="article-meta-row">
+          <div class="author-chip">
+            <span class="author-name">By Julian Vance</span> <span>&bull; Senior Systems Architect</span>
+          </div>
+          <div>
+            <time datetime="2026-09-18">September 18, 2026</time> <span>&bull;</span> <span>15 min read</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="article-hero-image-wrap">
+        <figure>
+          <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1600&q=80" alt="Physical lock cylinder representing digital cryptographic authentication">
+          <figcaption>Figure 1: Defensive security in practice: implementing layered access barriers across systems.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="article-layout-grid">
+        <aside class="toc-sidebar">
+          <h2 class="toc-heading">Table of Contents</h2>
+          <ul class="toc-list">
+            <li><a href="#cia-triad" class="toc-link">1. The CIA Triad Foundation</a></li>
+            <li><a href="#threat-modeling" class="toc-link">2. Practical Threat Modeling</a></li>
+            <li><a href="#social-engineering" class="toc-link">3. Social Engineering & Phishing</a></li>
+            <li><a href="#malware-taxonomy" class="toc-link">4. The Malware Taxonomy</a></li>
+            <li><a href="#credential-hygiene" class="toc-link">5. Credential Hygiene & Reuse</a></li>
+            <li><a href="#patch-management" class="toc-link">6. Patching & Vulnerability Cycles</a></li>
+            <li><a href="#home-perimeter" class="toc-link">7. Fortifying Home Perimeters</a></li>
+            <li><a href="#backup-strategy" class="toc-link">8. The 3-2-1 Backup Rule</a></li>
+            <li><a href="#faqs" class="toc-link">9. Frequently Asked Questions</a></li>
+          </ul>
+        </aside>
+
+        <article class="prose-content">
+          <h2 id="cia-triad">1. The CIA Triad: The Cornerstone of Information Security</h2>
+          <p>
+            All information security principles are anchored in three balancing objectives known as the <strong>CIA Triad</strong>:
+          </p>
+          <ul>
+            <li><strong>Confidentiality:</strong> Guaranteeing that data is readable only by authorized entities (achieved via end-to-end encryption, strict access controls, and principle of least privilege).</li>
+            <li><strong>Integrity:</strong> Guaranteeing that data cannot be modified, deleted, or fabricated in transit or storage without detection (achieved via cryptographic hashing like SHA-256 and digital signatures).</li>
+            <li><strong>Availability:</strong> Guaranteeing that systems and resources remain accessible when authorized users need them (achieved via redundant hardware, DDoS mitigation, and tested backups).</li>
+          </ul>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" alt="Enterprise datacenter security racks">
+            <figcaption>Figure 2: Physical access control: the forgotten physical layer of operational availability.</figcaption>
+          </figure>
+
+          <h2 id="threat-modeling">2. Practical Threat Modeling: Who Is Your Adversary?</h2>
+          <p>
+            You cannot defend against everything simultaneously. A sound security posture requires <strong>Threat Modeling</strong>:
+          </p>
+          <ol>
+            <li>What assets are you protecting? (Credentials, financial access, source repositories).</li>
+            <li>Who is the adversary? (Opportunistic automated bots, script kiddies, targeted criminal syndicates, nation-state actors).</li>
+            <li>What are the primary attack vectors? (Credential stuffing, compromised Wi-Fi, phishing emails).</li>
+          </ol>
+
+          <h2 id="social-engineering">3. Social Engineering and Phishing Deconstruction</h2>
+          <p>
+            Computers are mathematical engines governed by strict logic; humans are governed by emotion, urgency, and fatigue. The vast majority of breaches originate not with zero-day software exploits, but through <strong>social engineering</strong>:
+          </p>
+          <ul>
+            <li><strong>Credential Harvesting:</strong> Emails mimicking banks or cloud providers directing users to typosquatted domains (e.g., <code>accounts-goog1e.com</code>) designed to capture passwords and 2FA codes.</li>
+            <li><strong>Executive Impersonation (Whaling):</strong> Urgent requests pressuring employees to bypass standard verification protocols for wire transfers or gift cards.</li>
+          </ul>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=1200&q=80" alt="Encrypted security keys and physical vaults">
+            <figcaption>Figure 3: Cryptographic keys: ensuring mathematical guarantees against unauthorized decryption.</figcaption>
+          </figure>
+
+          <h2 id="malware-taxonomy">4. The Malware Taxonomy: From Trojans to Ransomware</h2>
+          <p>
+            Malicious software operates through distinct mechanisms:
+          </p>
+          <ul>
+            <li><strong>Ransomware:</strong> Silently encrypts user documents using asymmetric ciphers, holding the private key hostage.</li>
+            <li><strong>Info-Stealers & Keyloggers:</strong> Siphons browser session cookies, cryptocurrency wallets, and keystrokes to remote Command & Control (C2) servers.</li>
+            <li><strong>Trojans & Remote Access Tools (RATs):</strong> Disguised as legitimate software, granting attackers remote terminal backdoors.</li>
+          </ul>
+
+          <h2 id="credential-hygiene">5. Credential Hygiene and Password Reuse Attacks</h2>
+          <p>
+            When an insecure online forum gets breached and leaks 10 million plaintext passwords, automated bots immediately execute <strong>credential stuffing attacks</strong> against major banking, cloud, and email services. If you reuse the same password across multiple sites, a breach on an obscure hobby website compromises your primary email.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80" alt="Workstation security terminal running firewall rules">
+            <figcaption>Figure 4: Active firewall monitoring and endpoint inspection on local workstation interfaces.</figcaption>
+          </figure>
+
+          <h2 id="patch-management">6. Patching and the Vulnerability Lifecycle</h2>
+          <p>
+            Software contains bugs. When a security bug is discovered, it is assigned a <strong>CVE (Common Vulnerabilities and Exposures)</strong> identifier. Modern attackers reverse-engineer vendor patches within hours of release, creating automated exploits targeting unpatched devices. Enabling automatic operating system and browser updates eliminates the vast majority of commodity malware attacks.
+          </p>
+
+          <h2 id="home-perimeter">7. Fortifying Home Perimeters</h2>
+          <p>
+            Basic home network defense involves:
+          </p>
+          <ul>
+            <li>Changing default router administration passwords immediately.</li>
+            <li>Disabling UPnP (Universal Plug and Play) and Remote Web Management on your router.</li>
+            <li>Isolating untrusted Internet-of-Things (IoT) appliances onto a dedicated Guest Wi-Fi VLAN.</li>
+            <li>Using DNS-level filtering (e.g., Quad9 <code>9.9.9.9</code> or NextDNS) to block malicious malware domains at the socket level.</li>
+          </ul>
+
+          <h2 id="backup-strategy">8. The 3-2-1 Backup Rule: Infallible Recovery</h2>
+          <p>
+            Ransomware, hardware drive failures, and accidental deletions are inevitable. The industry gold standard for data survival is the <strong>3-2-1 Rule</strong>:
+          </p>
+          <ul>
+            <li>Maintain at least <strong>3 copies</strong> of your data.</li>
+            <li>Stored across <strong>2 different physical media formats</strong> (e.g., internal SSD and external USB drive).</li>
+            <li>With at least <strong>1 copy located off-site</strong> or in an encrypted cloud repository isolated from the local network.</li>
+          </ul>
+
+          <h2 id="faqs">9. Frequently Asked Questions</h2>
+          <div class="faq-section">
+            <div class="faq-item">
+              <h3 class="faq-question">Does using "Incognito Mode" make me anonymous online?</h3>
+              <div class="faq-answer">
+                No. Incognito mode only prevents your local browser from saving browsing history, local cookies, and form entries on your personal device. Your ISP, network administrator, and the remote web servers still see your public IP and full traffic requests.
+              </div>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">Are public Wi-Fi networks inherently dangerous with modern HTTPS?</h3>
+              <div class="faq-answer">
+                Because over 95% of web traffic is encrypted via TLS 1.3, eavesdroppers on public Wi-Fi cannot read your passwords or session data. However, they can still observe the domain names you visit via unencrypted DNS queries and Server Name Indication (SNI) headers.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; <span class="current-year">2026</span> Root Node. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="index.html">Home</a> <a href="blog.html">Articles</a> <a href="privacy.html">Privacy</a> <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="js/script.js"></script>
+</body>
+</html>

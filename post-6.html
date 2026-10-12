@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APIs Explained: How Applications Communicate With Each Other &bull; Root Node</title>
+  <meta name="description" content="A comprehensive technical guide to APIs, REST constraints, HTTP methods, JSON payloads, Bearer authentication, rate limiting, and webhooks.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+  <div id="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+      </a>
+      <nav class="primary-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link active">Articles</a>
+        <a href="blog.html?cat=web-dev" class="nav-link">Web Dev</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="blog.html" class="btn-nav-search">Search</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <header class="article-header-section">
+      <div class="container container-narrow">
+        <nav class="breadcrumb-nav">
+          <a href="index.html">Home</a> <span>/</span> <a href="blog.html">Articles</a> <span>/</span> <span>Post 06</span>
+        </nav>
+        <span class="post-category-tag">Web Development // Distributed Systems</span>
+        <h1 class="article-hero-title">APIs Explained: How Applications Communicate With Each Other</h1>
+        <p class="article-standfirst">
+          Software does not exist in isolation. Modern architectures thrive on contractual interfaces where programs exchange structured payloads over standardized network protocols.
+        </p>
+        <div class="article-meta-row">
+          <div class="author-chip">
+            <span class="author-name">By Julian Vance</span> <span>&bull; Senior Systems Architect</span>
+          </div>
+          <div>
+            <time datetime="2026-09-22">September 22, 2026</time> <span>&bull;</span> <span>16 min read</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="article-hero-image-wrap">
+        <figure>
+          <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80" alt="Global connected network lines representing distributed API endpoints">
+          <figcaption>Figure 1: Interconnected service topologies: how decoupled software applications exchange data contracts.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="article-layout-grid">
+        <aside class="toc-sidebar">
+          <h2 class="toc-heading">Table of Contents</h2>
+          <ul class="toc-list">
+            <li><a href="#what-is-api" class="toc-link">1. The Core Purpose of an API</a></li>
+            <li><a href="#rest-constraints" class="toc-link">2. REST Architecture Principles</a></li>
+            <li><a href="#http-semantics" class="toc-link">3. HTTP Methods & Status Codes</a></li>
+            <li><a href="#payloads-json" class="toc-link">4. Payloads & Data Contracts</a></li>
+            <li><a href="#auth-patterns" class="toc-link">5. Authentication & Tokens</a></li>
+            <li><a href="#pagination-limits" class="toc-link">6. Pagination & Rate Limiting</a></li>
+            <li><a href="#webhooks" class="toc-link">7. Webhooks: Event-Driven Push</a></li>
+            <li><a href="#curl-testing" class="toc-link">8. Testing APIs with curl</a></li>
+            <li><a href="#faqs" class="toc-link">9. Frequently Asked Questions</a></li>
+          </ul>
+        </aside>
+
+        <article class="prose-content">
+          <h2 id="what-is-api">1. The Core Purpose of an API</h2>
+          <p>
+            An <strong>Application Programming Interface (API)</strong> is a formalized set of rules, definitions, and communication protocols that allow one software component to interact with another. Rather than requiring direct access to a database or internal memory structures, an API provides a clean abstraction layer that exposes only authorized operations.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80" alt="Server rack cabling connecting microservices">
+            <figcaption>Figure 2: Microservice cluster cabling: physical connections servicing REST and gRPC API calls.</figcaption>
+          </figure>
+
+          <h2 id="rest-constraints">2. REST Architecture Principles</h2>
+          <p>
+            Formulated by Roy Fielding in his 2000 doctoral dissertation, <strong>REpresentational State Transfer (REST)</strong> defines a stateless client-server architectural style:
+          </p>
+          <ul>
+            <li><strong>Statelessness:</strong> Every single request from client to server must contain all of the contextual information and authentication tokens necessary to process the request. No session state is held on the server.</li>
+            <li><strong>Uniform Interface:</strong> Resources are identified by standard URIs (e.g., <code>/api/v1/users/42</code>) and manipulated using standard HTTP verbs.</li>
+            <li><strong>Cacheability:</strong> Responses must explicitly define whether they can be cached downstream (via <code>Cache-Control</code> and <code>ETag</code> headers).</li>
+          </ul>
+
+          <h2 id="http-semantics">3. HTTP Methods and Status Codes</h2>
+          <p>
+            RESTful services leverage HTTP verbs semantically:
+          </p>
+          <ul>
+            <li><code>GET</code> — Safe and idempotent retrieval of a resource.</li>
+            <li><code>POST</code> — Creation of a new subordinate resource.</li>
+            <li><code>PUT</code> — Full idempotent replacement of a resource.</li>
+            <li><code>PATCH</code> — Partial modification of a resource.</li>
+            <li><code>DELETE</code> — Idempotent removal of a resource.</li>
+          </ul>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status Code</th>
+                  <th>Category</th>
+                  <th>Standard Meaning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>200 OK</td><td>Success</td><td>Request fulfilled successfully with response body.</td></tr>
+                <tr><td>201 Created</td><td>Success</td><td>Resource successfully created via POST.</td></tr>
+                <tr><td>204 No Content</td><td>Success</td><td>Action completed; zero response payload body.</td></tr>
+                <tr><td>400 Bad Request</td><td>Client Error</td><td>Malformed syntax or invalid schema parameters.</td></tr>
+                <tr><td>401 Unauthorized</td><td>Client Error</td><td>Authentication credentials missing or invalid.</td></tr>
+                <tr><td>403 Forbidden</td><td>Client Error</td><td>Authenticated, but lacks authorization privileges.</td></tr>
+                <tr><td>404 Not Found</td><td>Client Error</td><td>Resource does not exist at URI.</td></tr>
+                <tr><td>429 Too Many Requests</td><td>Client Error</td><td>Rate limit exceeded; inspect Retry-After.</td></tr>
+                <tr><td>500 Internal Error</td><td>Server Error</td><td>Unhandled exception on backend application.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" alt="Terminal screen running curl API testing commands">
+            <figcaption>Figure 3: Interrogating API endpoints with command-line HTTP clients.</figcaption>
+          </figure>
+
+          <h2 id="payloads-json">4. Payloads & Data Contracts: JSON Serialization</h2>
+          <p>
+            While older APIs utilized verbose XML or SOAP specifications, modern web APIs overwhelmingly standardize on <strong>JSON (JavaScript Object Notation)</strong>:
+          </p>
+          <pre><code>{
+  "id": "usr_9912",
+  "username": "jvance",
+  "status": "active",
+  "created_at": "2026-10-10T14:32:00Z"
+}</code></pre>
+
+          <h2 id="auth-patterns">5. Authentication Patterns: API Keys and Bearer Tokens</h2>
+          <p>
+            Stateless APIs authenticate incoming requests via HTTP headers:
+          </p>
+          <ul>
+            <li><strong>API Keys:</strong> Passed via <code>X-API-Key: secret_abc123</code>. Suitable for server-to-server communication.</li>
+            <li><strong>Bearer Tokens (JWT):</strong> Passed via <code>Authorization: Bearer &lt;token&gt;</code>. JSON Web Tokens are digitally signed cryptographic strings containing user claims and expiration times.</li>
+          </ul>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" alt="Datacenter routing servers handling token authentication">
+            <figcaption>Figure 4: Distributed API gateway proxies validating token signatures at edge points.</figcaption>
+          </figure>
+
+          <h2 id="pagination-limits">6. Pagination and Rate Limiting Mechanics</h2>
+          <p>
+            When querying large datasets (e.g. 50,000 log records), dumping all records into a single response exhausts memory buffers. APIs use pagination:
+          </p>
+          <p>
+            <strong>Cursor-Based Pagination:</strong> Superior to offset-based pagination because it uses immutable record pointers:
+          </p>
+          <pre><code>GET /api/v1/events?limit=25&cursor=evt_1048</code></pre>
+          <p>
+            <strong>Rate Limiting:</strong> Enforces capacity ceilings (e.g., 100 requests per minute) using Token Bucket or Sliding Window algorithms, returning:
+          </p>
+          <pre><code>HTTP/2 429 Too Many Requests
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 0
+Retry-After: 45</code></pre>
+
+          <h2 id="webhooks">7. Webhooks: Event-Driven Push Notifications</h2>
+          <p>
+            Instead of forcing a client to poll an API every 5 seconds asking <em>"Has a payment succeeded yet?"</em>, webhooks invert control. When an event fires, the provider transmits an HTTP POST payload to a designated URL on the client server.
+          </p>
+          <p>
+            To prevent spoofing, webhook providers sign the payload using a shared secret and an <code>HMAC-SHA256</code> signature header (e.g., <code>X-Signature</code>), which the receiving server verifies before processing.
+          </p>
+
+          <h2 id="curl-testing">8. Practical API Testing with `curl`</h2>
+          <pre><code># Test an authenticated POST request with JSON payload:
+$ curl -X POST https://api.rootnode.dev/v1/articles \
+  -H "Authorization: Bearer secret_token_xyz" \
+  -H "Content-Type: application/json" \
+  -d '{"title": "How APIs Work", "category": "web-dev"}' \
+  -i</code></pre>
+
+          <h2 id="faqs">9. Frequently Asked Questions</h2>
+          <div class="faq-section">
+            <div class="faq-item">
+              <h3 class="faq-question">What is the difference between REST and GraphQL?</h3>
+              <div class="faq-answer">
+                REST uses fixed server endpoints and standard HTTP methods. GraphQL exposes a single POST endpoint where the client submits an arbitrary query defining the exact fields it requires, eliminating over-fetching.
+              </div>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">Why is idempotency critical in API design?</h3>
+              <div class="faq-answer">
+                An operation is idempotent if executing it multiple times produces the identical outcome. <code>GET</code>, <code>PUT</code>, and <code>DELETE</code> are naturally idempotent. Ensuring payment <code>POST</code> requests use idempotency keys prevents charging a customer twice during a network timeout retry.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; <span class="current-year">2026</span> Root Node. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="index.html">Home</a> <a href="blog.html">Articles</a> <a href="privacy.html">Privacy</a> <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="js/script.js"></script>
+</body>
+</html>

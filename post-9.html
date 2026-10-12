@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux Explained: Distributions, Terminals, and Everyday Use &bull; Root Node</title>
+  <meta name="description" content="A comprehensive technical guide to Linux: kernel architecture, distributions, the Filesystem Hierarchy Standard, systemd services, and terminal workflows.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+  <div id="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+      </a>
+      <nav class="primary-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link active">Articles</a>
+        <a href="blog.html?cat=technology" class="nav-link">Technology</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="blog.html" class="btn-nav-search">Search</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <header class="article-header-section">
+      <div class="container container-narrow">
+        <nav class="breadcrumb-nav">
+          <a href="index.html">Home</a> <span>/</span> <a href="blog.html">Articles</a> <span>/</span> <span>Post 09</span>
+        </nav>
+        <span class="post-category-tag">Technology // Operating Systems</span>
+        <h1 class="article-hero-title">Linux Explained: Distributions, Terminals, and Everyday Use</h1>
+        <p class="article-standfirst">
+          Linux powers virtually every public cloud server, supercomputer, Android smartphone, and submarine networking router. Here is how the kernel interacts with userland tools, the filesystem, and process execution.
+        </p>
+        <div class="article-meta-row">
+          <div class="author-chip">
+            <span class="author-name">By Julian Vance</span> <span>&bull; Senior Systems Architect</span>
+          </div>
+          <div>
+            <time datetime="2026-09-10">September 10, 2026</time> <span>&bull;</span> <span>17 min read</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="article-hero-image-wrap">
+        <figure>
+          <img src="https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=1600&q=80" alt="Linux terminal shell session on laptop screen">
+          <figcaption>Figure 1: POSIX command-line interface: executing kernel diagnostics and system services.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="article-layout-grid">
+        <aside class="toc-sidebar">
+          <h2 class="toc-heading">Table of Contents</h2>
+          <ul class="toc-list">
+            <li><a href="#what-is-linux" class="toc-link">1. The Kernel vs GNU Userland</a></li>
+            <li><a href="#distribution-families" class="toc-link">2. Distribution Lineages</a></li>
+            <li><a href="#fhs-structure" class="toc-link">3. The Filesystem Hierarchy (FHS)</a></li>
+            <li><a href="#permissions-model" class="toc-link">4. Users, Groups & Octal Modes</a></li>
+            <li><a href="#process-management" class="toc-link">5. Processes & Signal Handling</a></li>
+            <li><a href="#systemd-init" class="toc-link">6. Service Control with systemd</a></li>
+            <li><a href="#terminal-streams" class="toc-link">7. Streams, Pipes & Filters</a></li>
+            <li><a href="#immersion-plan" class="toc-link">8. A 7-Day Pragmatic Plan</a></li>
+            <li><a href="#faqs" class="toc-link">9. Frequently Asked Questions</a></li>
+          </ul>
+        </aside>
+
+        <article class="prose-content">
+          <h2 id="what-is-linux">1. The Kernel vs. GNU Userland</h2>
+          <p>
+            Strictly speaking, <strong>Linux is not an operating system; it is a kernel</strong>. The kernel is the core software program responsible for managing physical hardware resources: allocating CPU time, managing virtual memory pages, mediating access to disk storage, and controlling network interfaces.
+          </p>
+          <p>
+            A complete operating system requires a userland: standard C libraries (glibc/musl), system shells (bash, zsh), core command utilities (coreutils: <code>ls</code>, <code>cat</code>, <code>grep</code>), compiler toolchains, and init systems. This software predominantly originated from the GNU Project founded by Richard Stallman in 1983, giving rise to the formal designation GNU/Linux.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" alt="Datacenter rack blades running enterprise Linux kernels">
+            <figcaption>Figure 2: Enterprise server blades running headless Linux server distributions.</figcaption>
+          </figure>
+
+          <h2 id="distribution-families">2. The Distribution Lineages</h2>
+          <p>
+            A <strong>distribution (distro)</strong> combines the Linux kernel with a curated suite of userland software, a default desktop environment or headless server configuration, and a package management ecosystem:
+          </p>
+          <ul>
+            <li><strong>The Debian Family (Debian, Ubuntu, Linux Mint):</strong> Known for rock-solid stability, utilizing the <code>.deb</code> format and <code>apt</code> package manager.</li>
+            <li><strong>The Red Hat Family (RHEL, Fedora, Rocky Linux):</strong> Enterprise standard, utilizing <code>RPM</code> packages, <code>dnf</code>, and SELinux mandatory access controls.</li>
+            <li><strong>The Arch Family (Arch Linux, Manjaro):</strong> Rolling-release model, cutting-edge kernel packages, utilizing <code>pacman</code> and the Arch User Repository (AUR).</li>
+            <li><strong>Alpine Linux:</strong> Ultra-minimal distribution based on <code>musl</code> libc and BusyBox, famous for tiny 5MB Docker container images.</li>
+          </ul>
+
+          <h2 id="fhs-structure">3. The Filesystem Hierarchy Standard (FHS)</h2>
+          <p>
+            Unlike Windows with its partitioned drive letters (<code>C:\</code>, <code>D:\</code>), Linux organizes all physical drives, virtual devices, and pseudo-filesystems under a single unified tree starting at the root directory (<code>/</code>):
+          </p>
+          <ul>
+            <li><code>/etc</code> — Host-specific system-wide configuration text files.</li>
+            <li><code>/var</code> — Variable data: application logs (<code>/var/log</code>), databases, spool files.</li>
+            <li><code>/proc</code> — Virtual pseudo-filesystem exposing real-time kernel data structures and process states.</li>
+            <li><code>/dev</code> — Device nodes representing physical and virtual hardware interfaces (e.g., <code>/dev/sda</code>, <code>/dev/urandom</code>).</li>
+            <li><code>/home</code> — Personal user directories, dotfiles, and documents.</li>
+          </ul>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" alt="Terminal shell prompt inspecting file permissions and ownership">
+            <figcaption>Figure 3: Auditing POSIX file permissions, user groups, and inode metadata in bash.</figcaption>
+          </figure>
+
+          <h2 id="permissions-model">4. The Linux Permissions Model</h2>
+          <p>
+            Every file and directory in Linux is owned by a User and a Group, and maintains three permission triplets: Read (<code>r=4</code>), Write (<code>w=2</code>), and Execute (<code>x=1</code>):
+          </p>
+          <pre><code>$ ls -l /var/www/index.html
+-rw-r--r--  1 www-data www-data  4096 Oct 10 12:00 index.html
+# User (www-data): rw- (6)
+# Group (www-data): r-- (4)
+# Others: r-- (4)
+# Octal mode: 644</code></pre>
+
+          <h2 id="process-management">5. Process Management and UNIX Signals</h2>
+          <p>
+            Every executing program is a process identified by a unique Process ID (PID). Processes spawn child processes via the <code>fork()</code> and <code>exec()</code> system calls.
+          </p>
+          <p>
+            Processes communicate and terminate using asynchronous <strong>Signals</strong>:
+          </p>
+          <ul>
+            <li><code>SIGTERM (15)</code>: Polite termination request. The process catches this signal, completes database transactions, flushes buffers, and exits cleanly.</li>
+            <li><code>SIGKILL (9)</code>: Unconditional kernel-level termination. The kernel immediately destroys the process memory space without giving the process any opportunity to clean up.</li>
+          </ul>
+
+          <h2 id="systemd-init">6. Modern Service Control with `systemd`</h2>
+          <p>
+            The first process spawned by the Linux kernel is PID 1, universally managed in modern distributions by <code>systemd</code>:
+          </p>
+          <pre><code># Managing system services:
+$ sudo systemctl start nginx
+$ sudo systemctl status nginx
+$ sudo systemctl enable nginx    # Start automatically at boot
+
+# Inspecting real-time binary system logs:
+$ journalctl -u nginx -f</code></pre>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="Motherboard architecture representing system bus and hardware interrupts">
+            <figcaption>Figure 4: Hardware interrupts handled by the Linux kernel scheduler.</figcaption>
+          </figure>
+
+          <h2 id="terminal-streams">7. Streams, Pipes and the UNIX Philosophy</h2>
+          <p>
+            The foundational UNIX philosophy states: <em>"Write programs that do one thing and do it well. Write programs to work together. Write programs to handle text streams."</em>
+          </p>
+          <p>
+            Every process possesses three standard file descriptors: Standard Input (<code>stdin=0</code>), Standard Output (<code>stdout=1</code>), and Standard Error (<code>stderr=2</code>).
+          </p>
+          <pre><code># Chaining small utilities with pipes (|):
+$ cat /var/log/nginx/access.log | grep "404" | awk '{print $7}' | sort | uniq -c | sort -nr | head -n 5</code></pre>
+
+          <h2 id="immersion-plan">8. A 7-Day Pragmatic Linux Immersion Plan</h2>
+          <ol>
+            <li><strong>Day 1:</strong> Install Ubuntu or Fedora in a local virtual machine (VirtualBox, UTM, or WSL2).</li>
+            <li><strong>Day 2:</strong> Master navigation commands without touching the mouse (<code>cd</code>, <code>ls</code>, <code>pwd</code>, <code>mkdir</code>, <code>rm</code>).</li>
+            <li><strong>Day 3:</strong> Understand permissions (<code>chmod</code>, <code>chown</code>) and user management (<code>sudo</code>).</li>
+            <li><strong>Day 4:</strong> Practice text editing using Nano or Vim.</li>
+            <li><strong>Day 5:</strong> Manage processes (<code>ps aux</code>, <code>top</code>, <code>kill</code>) and systemd services.</li>
+            <li><strong>Day 6:</strong> Configure SSH keys and establish remote shell sessions.</li>
+            <li><strong>Day 7:</strong> Write an automated bash backup script utilizing <code>tar</code>, <code>cron</code>, and pipes.</li>
+          </ol>
+
+          <h2 id="faqs">9. Frequently Asked Questions</h2>
+          <div class="faq-section">
+            <div class="faq-item">
+              <h3 class="faq-question">What is the difference between `sudo` and logging in as `root`?</h3>
+              <div class="faq-answer">
+                Logging directly in as <code>root</code> gives every command permanent, unrestricted superuser privileges, making catastrophic typographical errors fatal. <code>sudo</code> (Superuser Do) allows an authorized user to execute specific administrative commands with temporary privilege escalation, logging every action to <code>/var/log/auth.log</code> for auditing.
+              </div>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">Why does Linux treat "everything as a file"?</h3>
+              <div class="faq-answer">
+                Treating storage drives, network sockets, serial ports, and kernel data structures as file descriptors allows developers to use the identical standard I/O API (<code>open()</code>, <code>read()</code>, <code>write()</code>, <code>close()</code>) across all system resources.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; <span class="current-year">2026</span> Root Node. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="index.html">Home</a> <a href="blog.html">Articles</a> <a href="privacy.html">Privacy</a> <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="js/script.js"></script>
+</body>
+</html>

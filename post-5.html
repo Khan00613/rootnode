@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python for Beginners: From Your First Script to Real Projects &bull; Root Node</title>
+  <meta name="description" content="A practical guide to modern Python: execution models, data structures, virtual environments, error handling, file I/O, and real CLI tooling.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+  <div id="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+      </a>
+      <nav class="primary-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link active">Articles</a>
+        <a href="blog.html?cat=programming" class="nav-link">Programming</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="blog.html" class="btn-nav-search">Search</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <header class="article-header-section">
+      <div class="container container-narrow">
+        <nav class="breadcrumb-nav">
+          <a href="index.html">Home</a> <span>/</span> <a href="blog.html">Articles</a> <span>/</span> <span>Post 05</span>
+        </nav>
+        <span class="post-category-tag">Programming // Software Development</span>
+        <h1 class="article-hero-title">Python for Beginners: From Your First Script to Real Projects</h1>
+        <p class="article-standfirst">
+          Python is renowned for readable syntax, but mastering it requires understanding how the interpreter parses code, how memory references operate, and how to structure robust virtual environments.
+        </p>
+        <div class="article-meta-row">
+          <div class="author-chip">
+            <span class="author-name">By Julian Vance</span> <span>&bull; Senior Systems Architect</span>
+          </div>
+          <div>
+            <time datetime="2026-09-27">September 27, 2026</time> <span>&bull;</span> <span>15 min read</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="article-hero-image-wrap">
+        <figure>
+          <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1600&q=80" alt="Code editor showing clean Python script syntax">
+          <figcaption>Figure 1: Writing clean, idiomatic Python code inside an engineering terminal environment.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="article-layout-grid">
+        <aside class="toc-sidebar">
+          <h2 class="toc-heading">Table of Contents</h2>
+          <ul class="toc-list">
+            <li><a href="#execution-model" class="toc-link">1. Python's Execution Model</a></li>
+            <li><a href="#core-types" class="toc-link">2. Variables, Memory & Core Types</a></li>
+            <li><a href="#data-structures" class="toc-link">3. Lists, Dicts, Tuples & Sets</a></li>
+            <li><a href="#control-flow" class="toc-link">4. Idiomatic Control Flow</a></li>
+            <li><a href="#functions-scopes" class="toc-link">5. Functions, Arguments & Scope</a></li>
+            <li><a href="#virtual-environments" class="toc-link">6. Virtual Environments & Pip</a></li>
+            <li><a href="#exception-handling" class="toc-link">7. Resilient Exception Handling</a></li>
+            <li><a href="#practical-project" class="toc-link">8. Building a Real CLI Tool</a></li>
+            <li><a href="#faqs" class="toc-link">9. Frequently Asked Questions</a></li>
+          </ul>
+        </aside>
+
+        <article class="prose-content">
+          <h2 id="execution-model">1. Python's Execution Model: Bytecode & the GIL</h2>
+          <p>
+            Python is an interpreted, dynamically typed language. When you run <code>python script.py</code>, CPython (the standard implementation written in C) first compiles your human-readable source code into intermediate <strong>bytecode</strong> (saved as <code>.pyc</code> files inside <code>__pycache__</code>).
+          </p>
+          <p>
+            This bytecode is then executed by the CPython Virtual Machine. CPython uses a Global Interpreter Lock (GIL) to prevent multiple native OS threads from executing Python bytecode simultaneously, guaranteeing thread safety for memory management at the expense of CPU-bound multi-threading.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="Microcontroller and silicon hardware circuits">
+            <figcaption>Figure 2: Memory addressing and reference counting in interpreted runtimes.</figcaption>
+          </figure>
+
+          <h2 id="core-types">2. Variables, Memory and Reference Counting</h2>
+          <p>
+            In languages like C or Rust, a variable is a named memory location where data is directly stored. In Python, <strong>variables are pointers (names) bound to objects</strong> in heap memory.
+          </p>
+          <pre><code>a = [1, 2, 3]
+b = a          # Both 'a' and 'b' point to the exact same list in memory!
+b.append(4)
+print(a)       # Prints: [1, 2, 3, 4]</code></pre>
+          <p>
+            Python manages memory using automatic reference counting complemented by a generational cyclic garbage collector.
+          </p>
+
+          <h2 id="data-structures">3. Essential Data Structures in Action</h2>
+          <p>
+            Writing idiomatic Python requires choosing the right container for your time complexity needs:
+          </p>
+          <ul>
+            <li><strong>Lists (<code>[]</code>):</strong> Mutable dynamic arrays. O(1) append, but O(N) search and arbitrary insertion.</li>
+            <li><strong>Dictionaries (<code>{}</code>):</strong> High-performance hash maps. O(1) average lookup, insertion, and deletion.</li>
+            <li><strong>Tuples (<code>()</code>):</strong> Immutable sequences. Ideal for fixed records and dictionary keys.</li>
+            <li><strong>Sets (<code>set()</code>):</strong> Unordered collections of unique hashed elements. O(1) membership testing (<code>if item in my_set:</code>).</li>
+          </ul>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80" alt="Developer desk setup with laptop and programming notes">
+            <figcaption>Figure 3: Structuring idiomatic script logic with modular separation of concerns.</figcaption>
+          </figure>
+
+          <h2 id="control-flow">4. Idiomatic Control Flow: List Comprehensions</h2>
+          <p>
+            Instead of writing verbose C-style loops to filter and transform lists:
+          </p>
+          <pre><code># Idiomatic List Comprehension
+servers = ["web-1", "db-primary", "cache-1", "web-2"]
+web_nodes = [s.upper() for s in servers if s.startswith("web")]
+# Result: ['WEB-1', 'WEB-2']</code></pre>
+
+          <h2 id="functions-scopes">5. Functions, Scopes & Decorators</h2>
+          <p>
+            Functions are first-class citizens in Python—they can be assigned to variables, passed as arguments, and returned from other functions. This enables decorators: wrappers that modify the behavior of functions cleanly:
+          </p>
+          <pre><code>import time
+
+def timing_decorator(func):
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        elapsed = time.perf_counter() - start
+        print(f"{func.__name__} executed in {elapsed:.4f}s")
+        return result
+    return wrapper</code></pre>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=1200&q=80" alt="Archival books and organized library representing package ecosystems">
+            <figcaption>Figure 4: The PyPI ecosystem: managing packages and virtual environment isolation.</figcaption>
+          </figure>
+
+          <h2 id="virtual-environments">6. Virtual Environments & Dependency Hygiene</h2>
+          <p>
+            Never install third-party packages globally into your operating system's base Python. Global installs cause conflicting dependency versions that break system tools.
+          </p>
+          <pre><code># Always create an isolated virtual environment per project:
+$ python3 -m venv .venv
+$ source .venv/bin/activate    # On Linux/macOS
+$ .venv\Scripts\activate       # On Windows
+
+(.venv) $ pip install requests rich
+(.venv) $ pip freeze > requirements.txt</code></pre>
+
+          <h2 id="exception-handling">7. Resilient Exception Handling (EAFP)</h2>
+          <p>
+            Python culture favors the <strong>EAFP</strong> principle: <em>"It's Easier to Ask for Forgiveness than Permission."</em> Instead of checking if a file exists with complex if-statements before opening, wrap the operation in a <code>try-except</code> block:
+          </p>
+          <pre><code>try:
+    with open("config.json", "r") as f:
+        config = json.load(f)
+except FileNotFoundError:
+    print("Warning: config.json missing. Loading defaults.")
+    config = {}</code></pre>
+
+          <h2 id="practical-project">8. Building a Real CLI Tool</h2>
+          <p>
+            A practical script that queries a REST API, parses JSON, and logs formatted output to disk:
+          </p>
+          <pre><code>import sys
+import json
+import urllib.request
+
+def fetch_domain_status(domain: str) -> dict:
+    url = f"https://dns.google/resolve?name={domain}&type=A"
+    req = urllib.request.Request(url, headers={"User-Agent": "RootNodeCLI/1.0"})
+    with urllib.request.urlopen(req) as resp:
+        return json.loads(resp.read().decode("utf-8"))
+
+if __name__ == "__main__":
+    target = sys.argv[1] if len(sys.argv) > 1 else "rootnode.dev"
+    data = fetch_domain_status(target)
+    print(f"Status for {target}: Code {data.get('Status')}")</code></pre>
+
+          <h2 id="faqs">9. Frequently Asked Questions</h2>
+          <div class="faq-section">
+            <div class="faq-item">
+              <h3 class="faq-question">What is `if __name__ == '__main__':`?</h3>
+              <div class="faq-answer">
+                It checks whether the script is being executed directly from the terminal or being imported as a module into another file. It ensures executable logic runs only when called directly.
+              </div>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">Why use `with open(...)` instead of regular `f = open()`?</h3>
+              <div class="faq-answer">
+                The <code>with</code> statement is a context manager. It guarantees that the file handle is safely closed even if an unhandled exception or crash occurs inside the block.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; <span class="current-year">2026</span> Root Node. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="index.html">Home</a> <a href="blog.html">Articles</a> <a href="privacy.html">Privacy</a> <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="js/script.js"></script>
+</body>
+</html>

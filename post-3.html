@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Websites Work: From Browser Request to Rendered Page &bull; Root Node</title>
+  <meta name="description" content="An exhaustive technical analysis of browser internals: network streams, HTML tokenization, DOM/CSSOM construction, layout calculation, rasterization, GPU compositing, and JavaScript execution.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+
+  <!-- Top Reading Progress Indicator -->
+  <div id="reading-progress" aria-hidden="true"></div>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+      </a>
+
+      <nav class="primary-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link active">Articles</a>
+        <a href="blog.html?cat=web-dev" class="nav-link">Web Dev</a>
+        <a href="blog.html?cat=programming" class="nav-link">Programming</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="blog.html" class="btn-nav-search">Search</a>
+        <button class="mobile-toggle" aria-label="Toggle Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Article Header Section -->
+    <header class="article-header-section">
+      <div class="container container-narrow">
+        <nav class="breadcrumb-nav" aria-label="Breadcrumbs">
+          <a href="index.html">Home</a>
+          <span>/</span>
+          <a href="blog.html">Articles</a>
+          <span>/</span>
+          <a href="blog.html?cat=web-dev">Web Development</a>
+          <span>/</span>
+          <span>Post 03</span>
+        </nav>
+
+        <a href="blog.html?cat=web-dev" class="post-category-tag">Web Development // Browser Internals</a>
+        <h1 class="article-hero-title">How Websites Work: From Browser Request to Rendered Page</h1>
+        <p class="article-standfirst">
+          A web browser is not merely a document viewer—it is a sophisticated, multi-threaded operating system with its own networking stack, tokenizers, layout engines, and hardware-accelerated graphics pipelines. Here is the microscopic journey from network bytes to interactive pixels on your display.
+        </p>
+
+        <div class="article-meta-row">
+          <div class="author-chip">
+            <span class="author-name">By Julian Vance</span>
+            <span>&bull; Senior Systems Architect</span>
+          </div>
+          <div>
+            <time datetime="2026-10-05">October 05, 2026</time>
+            <span>&bull;</span>
+            <span>18 min read (3,520 words)</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Image -->
+    <div class="container">
+      <div class="article-hero-image-wrap">
+        <figure>
+          <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1600&q=80" alt="Workstation desk displaying code editors and browser rendering inspection windows">
+          <figcaption>Figure 1: High-resolution developer workstation running source inspection and performance timeline profiling.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- Article Body with Sticky Table of Contents -->
+    <div class="container">
+      <div class="article-layout-grid">
+        <!-- Sticky Sidebar Navigation -->
+        <aside class="toc-sidebar" aria-label="Table of Contents">
+          <h2 class="toc-heading">Table of Contents</h2>
+          <ul class="toc-list">
+            <li><a href="#browser-as-os" class="toc-link">1. The Browser as an Operating System</a></li>
+            <li><a href="#network-ingestion" class="toc-link">2. Network Ingestion & TCP Buffers</a></li>
+            <li><a href="#tokenization-pipeline" class="toc-link">3. The HTML Tokenization Pipeline</a></li>
+            <li><a href="#dom-construction" class="toc-link">4. Document Object Model (DOM)</a></li>
+            <li><a href="#cssom-construction" class="toc-link">5. CSS Object Model (CSSOM) & Cascade</a></li>
+            <li><a href="#render-tree" class="toc-link">6. The Render Tree Synthesis</a></li>
+            <li><a href="#layout-phase" class="toc-link">7. The Layout Phase (Reflow)</a></li>
+            <li><a href="#paint-phase" class="toc-link">8. Paint & Rasterization</a></li>
+            <li><a href="#compositing-gpu" class="toc-link">9. Compositing & GPU Acceleration</a></li>
+            <li><a href="#javascript-runtime" class="toc-link">10. The V8/Spidermonkey Runtime Loop</a></li>
+            <li><a href="#crp-optimization" class="toc-link">11. Critical Rendering Path Tuning</a></li>
+            <li><a href="#frequently-asked-questions" class="toc-link">12. Frequently Asked Questions</a></li>
+          </ul>
+        </aside>
+
+        <!-- Main Prose Column -->
+        <article class="prose-content">
+          <p>
+            When web developers write markup like <code>&lt;main class="article"&gt;</code>, style rules like <code>display: grid</code>, or client-side JavaScript event listeners, we operate at a high level of abstraction. It is easy to view the browser as an unassuming canvas that simply "interprets" text files and paints pretty rectangles onto the glass of a smartphone or desktop monitor.
+          </p>
+          <p>
+            In truth, modern browser engines—such as Google's Chromium (Blink), Apple's WebKit, and Mozilla's Gecko—are among the most complex software engineering artifacts on earth. Chromium alone comprises over 35 million lines of C++ code, rivaling modern operating system kernels.
+          </p>
+          <p>
+            Between the moment raw bytes arrive at your network interface card and the instant 60 or 120 frames per second of interactive graphics refresh on your screen, a breathtaking sequence of lexical analysis, tree construction, geometric calculation, rasterization, and GPU compositing takes place. Understanding this pipeline—known classically as the <strong>Critical Rendering Path (CRP)</strong>—is the bedrock of building performant, responsive web applications.
+          </p>
+
+          <h2 id="browser-as-os">1. The Browser as a Multi-Process Operating System</h2>
+          <p>
+            Early browsers from the 1990s were monolithic, single-threaded applications. If a single JavaScript script encountered an infinite loop or a memory leak, the entire browser window—including all other open pages and the operating system interface—froze solid.
+          </p>
+          <p>
+            Modern web browsers operate as distributed multi-process systems utilizing operating system sandboxing primitives for security, stability, and parallelism:
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" alt="Terminal session displaying multi-threaded processes and memory allocations">
+            <figcaption>Figure 2: Multi-process process architecture isolating network, renderer, and GPU execution pipelines.</figcaption>
+          </figure>
+
+          <ul>
+            <li><strong>The Browser Process (Main):</strong> Orchestrates the application chrome (navigation bar, bookmarks, back/forward buttons), manages disk I/O, user permissions, and spawns other processes.</li>
+            <li><strong>The Renderer Process:</strong> Runs the rendering engine (Blink/WebKit) and JavaScript engine (V8/JavaScriptCore). By default, modern browsers isolate every separate origin or tab into its own sandboxed renderer process (Site Isolation), preventing malicious scripts in one tab from inspecting memory in another tab.</li>
+            <li><strong>The GPU Process:</strong> Handles graphics draw calls and interfaces directly with graphics APIs (DirectX, Metal, Vulkan, OpenGL). It is isolated so that a GPU driver crash does not bring down the entire browser.</li>
+            <li><strong>The Network Process:</strong> Manages HTTP/2 and HTTP/3 socket connections, TLS sessions, certificate validation, and disk caching pools.</li>
+          </ul>
+
+          <h2 id="network-ingestion">2. Network Ingestion and TCP Stream Chunking</h2>
+          <p>
+            The lifecycle begins in the Network Process. Once DNS resolution completes and a TLS 1.3 socket is established, the browser transmits an HTTP request.
+          </p>
+          <p>
+            The web server responds with an HTTP status header followed by the binary byte stream. For example:
+          </p>
+          <pre><code>HTTP/2 200 OK
+content-type: text/html; charset=utf-8
+content-encoding: gzip
+cache-control: public, max-age=3600
+content-length: 42180</code></pre>
+          <p>
+            The browser does <em>not</em> wait for the entire 42KB or 5MB file to finish downloading before it begins work. That would destroy perceived loading performance. Instead, as soon as the first TCP packet payload arrives in the network socket buffer, the data is pushed across an Inter-Process Communication (IPC) pipe to the assigned Renderer Process.
+          </p>
+          <p>
+            The renderer begins parsing the incoming byte stream incrementally, chunk by chunk, streaming the HTML directly into the tokenizer as it arrives over the wire.
+          </p>
+
+          <h2 id="tokenization-pipeline">3. The HTML Tokenization Pipeline</h2>
+          <p>
+            Computers do not understand raw characters; they understand memory pointers and object graphs. Converting raw ASCII/UTF-8 bytes into structured data involves four sequential stages defined by the WHATWG HTML5 specification:
+          </p>
+          <ol>
+            <li><strong>Bytes to Characters:</strong> The raw incoming byte stream (e.g., <code>0x3C 0x68 0x31 0x3E</code>) is decoded into character strings (<code>&lt;h1&gt;</code>) based on the specified character encoding (almost universally UTF-8).</li>
+            <li><strong>Tokenization:</strong> The character stream passes through a state machine that parses characters into discrete grammatical tokens: StartTag (<code>&lt;html&gt;</code>, <code>&lt;p&gt;</code>), EndTag (<code>&lt;/p&gt;</code>), Character tokens (the text between tags), Comment tokens, and DOCTYPE tokens.</li>
+            <li><strong>Node Creation:</strong> As tokens are emitted, the parser instantiates corresponding <code>Node</code> objects in memory (e.g., <code>HTMLHeadingElement</code>, <code>HTMLParagraphElement</code>, <code>TextNode</code>), each possessing specific properties, methods, and attribute maps.</li>
+            <li><strong>Tree Construction:</strong> The nodes are linked into a hierarchical parent-child data structure: the <strong>Document Object Model (DOM)</strong>.</li>
+          </ol>
+
+          <div class="callout-box">
+            <div class="callout-title">The Engineering Miracle of HTML Error Tolerance</div>
+            <p>
+              Unlike strict programming language compilers (such as Rust or C++) which immediately abort execution upon encountering a missing semicolon or syntax error, the HTML parser was engineered with deliberate, standardized error tolerance. If a developer forgets a closing <code>&lt;/p&gt;</code> or nests tags illegally, the WHATWG specification mandates precise recovery algorithms. The browser will never crash or refuse to render a page due to malformed HTML.
+            </p>
+          </div>
+
+          <h2 id="dom-construction">4. Document Object Model (DOM)</h2>
+          <p>
+            The DOM is the in-memory tree representation of the HTML document. It represents both the structure of the document and the programmatic API that JavaScript interfaces with via the global <code>document</code> object.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=1200&q=80" alt="Geometric structural architecture representing tree node hierarchies">
+            <figcaption>Figure 3: Structured tree hierarchies: visual analogy of the parent-child node graph in the DOM and CSSOM.</figcaption>
+          </figure>
+
+          <p>
+            At the top of the tree sits the <code>Document</code> root, branching into the <code>html</code> element, which splits into <code>head</code> and <code>body</code>, cascading down to leaves representing individual text runs and image tags.
+          </p>
+          <p>
+            Because the parser operates incrementally, it builds the DOM progressively. If a page has 5,000 paragraphs, the user can read the first paragraph while the 5,000th is still traveling through undersea fiber cables.
+          </p>
+
+          <h2 id="cssom-construction">5. CSS Object Model (CSSOM) and Cascade Resolution</h2>
+          <p>
+            While the DOM describes <em>what</em> elements exist, it contains zero information about how those elements should appear visually. That is the domain of the <strong>CSS Object Model (CSSOM)</strong>.
+          </p>
+          <p>
+            As the HTML parser encounters external stylesheet links (<code>&lt;link rel="stylesheet" href="style.css"&gt;</code>) or inline <code>&lt;style&gt;</code> tags, it dispatches network requests and parses the CSS rules into an independent tree structure.
+          </p>
+          <p>
+            CSS is structured hierarchically. When computing the final style for an element, the browser engine must solve a complex mathematical constraint problem governed by:
+          </p>
+          <ul>
+            <li><strong>Origin and Importance:</strong> User Agent default styles (browser defaults) vs. User custom styles vs. Author stylesheets (your CSS) vs. <code>!important</code> declarations.</li>
+            <li><strong>Specificity:</strong> The selector weighting algorithm. An inline <code>style=""</code> beats an ID selector (<code>#header</code>), which beats a class selector (<code>.nav-item</code>), which beats an element selector (<code>h1</code>).</li>
+            <li><strong>Source Order:</strong> When specificity is equal, the last declared rule in the stylesheet overrides previous declarations.</li>
+            <li><strong>Inheritance:</strong> Properties like <code>font-family</code> and <code>color</code> naturally cascade down from parent nodes to child nodes unless explicitly overridden.</li>
+          </ul>
+
+          <div class="callout-box">
+            <div class="callout-title">Critical Concept: CSS is Render-Blocking</div>
+            <p>
+              Why does the browser refuse to paint anything to the screen while an external CSS stylesheet is downloading? This is by deliberate design to avoid the <strong>Flash of Unstyled Content (FOUC)</strong>. If the browser rendered raw HTML immediately, the user would see a jarring flash of unstyled black text and blue links, only for the layout to jump violently half a second later when the CSS arrived. Therefore, CSS is strictly render-blocking.
+            </p>
+          </div>
+
+          <h2 id="render-tree">6. The Render Tree: Unifying Structure and Presentation</h2>
+          <p>
+            Once the browser has built both the DOM and the CSSOM, it merges them into a third tree: the <strong>Render Tree</strong>.
+          </p>
+          <p>
+            The Render Tree contains only the nodes required to paint visual pixels to the display. It walks the DOM from the root and queries the CSSOM to compute the style for each node. Crucially, the Render Tree does <em>not</em> mirror the DOM 1:1:
+          </p>
+          <ul>
+            <li>Non-visual tags located inside <code>&lt;head&gt;</code> (such as <code>&lt;meta&gt;</code>, <code>&lt;script&gt;</code>, <code>&lt;title&gt;</code>) are omitted entirely from the Render Tree.</li>
+            <li>Any element styled with <code>display: none</code> is completely stripped from the Render Tree, along with all of its children, because it occupies zero space in the visual layout.</li>
+            <li>In contrast, an element styled with <code>visibility: hidden</code> or <code>opacity: 0</code> <strong>is included</strong> in the Render Tree, because it still occupies geometric space on the screen even though its pixels are invisible.</li>
+            <li>Pseudo-elements like <code>::before</code> and <code>::after</code> are created as synthetic nodes in the Render Tree even though they never existed in the original HTML markup.</li>
+          </ul>
+
+          <h2 id="layout-phase">7. The Layout Phase (Reflow): Computing Geometric Coordinates</h2>
+          <p>
+            Now that the engine knows which nodes to display and what styles apply to them, it faces a fundamental geometric question: <em>Where exactly on the 2D coordinate plane do these elements sit, and what are their exact pixel dimensions?</em>
+          </p>
+          <p>
+            This calculation is known as the <strong>Layout phase</strong> (or <strong>Reflow</strong> in Gecko terminology).
+          </p>
+          <p>
+            The layout engine starts at the root of the Render Tree (the Viewport) and traverses downward recursively. It applies the CSS Box Model—calculating content width, padding, borders, and margins. It evaluates dynamic layout contexts:
+          </p>
+          <ul>
+            <li>Converting relative units (<code>rem</code>, <code>vw</code>, <code>50%</code>) into absolute physical device pixels.</li>
+            <li>Resolving Flexbox and CSS Grid constraints, distributing remaining space among flexible tracks and calculating auto-margins.</li>
+            <li>Calculating line wrapping, text kerning, font glyph metrics, and baseline alignments across diverse international writing modes (such as vertical text or right-to-left scripts).</li>
+            <li>Calculating intrinsic sizing: resolving <code>min-content</code>, <code>max-content</code>, and <code>fit-content</code> dimensional envelopes before settling container bounds.</li>
+          </ul>
+          <p>
+            The output of the layout phase is a <strong>Box Tree</strong>: every render node now possesses concrete physical coordinates (e.g., <em>"Node 42 sits at x=140px, y=320px, with width=680px and height=48px"</em>).
+          </p>
+          <p>
+            Layout calculations are computationally intensive because layout changes cascade. If an element near the top of the DOM tree changes its height by just 2 pixels, every sibling and descendant element below it on the page must have its geometric position recalculated. In complex applications with thousands of nested DOM nodes, triggering full-document layout reflows during a scroll or animation loop easily consumes 20 to 50 milliseconds of CPU time, guaranteeing frame drops.
+          </p>
+
+          <h2 id="paint-phase">8. The Paint Phase: Translating Geometry into Draw Calls</h2>
+          <p>
+            Knowing the size and coordinates of a box does not mean it is visible. The browser must now determine what colors, borders, shadows, text glyphs, and images fill that space. This is the <strong>Paint phase</strong> (or <strong>Rasterization</strong>).
+          </p>
+          <p>
+            Painting does not produce a flat bitmap in a single pass. Instead, the rendering engine generates a sequence of <strong>Display Items</strong> (analogous to drawing commands in an SVG or Skia graphics context):
+          </p>
+          <ol>
+            <li>Draw background color and borders.</li>
+            <li>Draw background image patterns and linear/radial gradients.</li>
+            <li>Draw foreground text glyphs and font antialiasing paths.</li>
+            <li>Draw outline decorations, box shadows, and selection highlights.</li>
+          </ol>
+          <p>
+            To preserve visual correctness (e.g., ensuring a popup modal sits on top of a paragraph, or a sticky header overlays a table), the paint phase strictly respects the CSS stacking context and <code>z-index</code> rules, ordering draw commands from back to front.
+          </p>
+          <p>
+            Modern engines divide the page into small, manageable rectangular areas called <strong>Tiles</strong> (typically 256x256 or 512x512 pixels). Instead of painting the entire 10,000-pixel-tall article all at once, the browser prioritizes rasterizing only the tiles currently visible within the user's viewport (plus a modest margin around the edges to prepare for scrolling). As the user scrolls, new tiles are fed to background raster worker threads on demand.
+          </p>
+
+          <h2 id="compositing-gpu">9. Compositing and Hardware GPU Acceleration</h2>
+          <p>
+            In early web engines, painting was performed by the CPU directly onto a single giant bitmap representing the entire webpage. If the user scrolled down by 10 pixels or triggered a hover animation, the engine had to recalculate and repaint the entire visible screen from scratch—a computationally catastrophic bottleneck that caused severe scrolling stutter (jank).
+          </p>
+          <p>
+            Modern engines solve this through <strong>Compositing</strong>.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="Silicon GPU die processing parallel pixel shaders">
+            <figcaption>Figure 4: GPU silicon executes compositing matrices in parallel, bypassing main-thread CPU bottlenecks.</figcaption>
+          </figure>
+
+          <p>
+            The browser splits the webpage into multiple independent memory layers (Compositing Layers), much like layers in graphic design software. Certain CSS properties automatically elevate an element into its own hardware-accelerated layer:
+          </p>
+          <ul>
+            <li><code>transform: translate3d()</code> or 3D rotations.</li>
+            <li><code>will-change: transform</code> or <code>will-change: opacity</code>.</li>
+            <li><code>&lt;video&gt;</code> and <code>&lt;canvas&gt;</code> elements with active WebGL contexts.</li>
+            <li>Elements with CSS filters (e.g., <code>backdrop-filter: blur()</code>).</li>
+            <li>Fixed-position elements overlapping other composited elements.</li>
+          </ul>
+          <p>
+            Each layer is rasterized independently into a GPU texture stored in video RAM (VRAM). The <strong>Compositor Thread</strong> (which runs completely separate from the main JavaScript thread) instructs the GPU process to assemble these textures onto the screen using fast matrix transformations.
+          </p>
+          <p>
+            This architectural decoupling is why animations driven purely by CSS <code>transform</code> and <code>opacity</code> run at a silky smooth 60 or 120 FPS even when the main JavaScript thread is frozen executing a heavy loop. The compositor thread can scroll and move layers without asking the main thread to recalculate layout or repaint!
+          </p>
+          <p>
+            However, hardware acceleration is not a free lunch. Overusing layer elevation (for example, blindly applying <code>transform: translateZ(0)</code> to hundreds of elements) triggers <strong>Layer Explosion</strong>, consuming hundreds of megabytes of mobile VRAM and causing the GPU process to crash or drop textures.
+          </p>
+
+          <h2 id="javascript-runtime">10. The JavaScript Runtime: V8 and the Event Loop</h2>
+          <p>
+            Where does JavaScript fit into this pipeline? By default, JavaScript is <strong>parser-blocking</strong>.
+          </p>
+          <p>
+            When the HTML parser encounters a synchronous script tag:
+          </p>
+          <pre><code>&lt;script src="bundle.js"&gt;&lt;/script&gt;</code></pre>
+          <p>
+            The parser must stop dead in its tracks. Why? Because the JavaScript inside <code>bundle.js</code> might execute <code>document.write('&lt;/body&gt;&lt;h1&gt;Overwritten!&lt;/h1&gt;')</code> or mutate the DOM tree. The engine cannot safely assume what the HTML structure will look like until the script has downloaded, parsed, and finished running.
+          </p>
+          <p>
+            Inside modern engines like Chromium's V8 or Firefox's SpiderMonkey, JavaScript execution is governed by a multi-tier Just-In-Time (JIT) compiler pipeline:
+          </p>
+          <ul>
+            <li><strong>Ignition (Interpreter):</strong> Generates bytecode quickly to start execution without compilation pauses.</li>
+            <li><strong>Sparkplug & Maglev:</strong> Mid-tier baseline compilers generating unoptimized machine code rapidly.</li>
+            <li><strong>TurboFan (Optimizing Compiler):</strong> Analyzes hot functions during runtime, generates highly optimized assembly using type feedback, and deoptimizes back to bytecode if assumptions are violated.</li>
+          </ul>
+          <p>
+            JavaScript tasks run within the <strong>Event Loop</strong>. The browser divides tasks into <strong>Macrotasks</strong> (I/O, timer callbacks like <code>setTimeout</code>) and <strong>Microtasks</strong> (Promise resolution callbacks, <code>queueMicrotask</code>, MutationObserver). The event loop guarantees that the microtask queue is completely drained after every callback before the rendering pipeline is permitted to execute its animation frame callbacks (<code>requestAnimationFrame</code>), style recalculations, and compositing passes.
+          </p>
+          <p>
+            Modern web development circumvents this bottleneck using asynchronous script attributes:
+          </p>
+          <ul>
+            <li><strong><code>defer</code>:</strong> Downloads the script in the background without pausing HTML parsing. The script executes only after the HTML parser has completely finished building the DOM, in strict document order.</li>
+            <li><strong><code>async</code>:</strong> Downloads the script in the background, but pauses the parser to execute the script the microsecond it finishes downloading. Order of execution is non-deterministic.</li>
+          </ul>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Script Pattern</th>
+                  <th>Parsing Paused for Download?</th>
+                  <th>Parsing Paused for Execution?</th>
+                  <th>Execution Timing</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>&lt;script&gt;</code> (Default)</td>
+                  <td><strong>Yes (Blocks immediately)</strong></td>
+                  <td><strong>Yes</strong></td>
+                  <td>Immediately upon download.</td>
+                </tr>
+                <tr>
+                  <td><code>&lt;script defer&gt;</code></td>
+                  <td>No (Parallel background download)</td>
+                  <td>No (Waits for DOM ready)</td>
+                  <td>Guaranteed in document order before DOMContentLoaded.</td>
+                </tr>
+                <tr>
+                  <td><code>&lt;script async&gt;</code></td>
+                  <td>No (Parallel background download)</td>
+                  <td><strong>Yes (Pauses whenever it arrives)</strong></td>
+                  <td>As soon as available (non-ordered).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="crp-optimization">11. Critical Rendering Path Optimization</h2>
+          <p>
+            Now that you understand the underlying engine, how do we make websites load instantly? We must minimize the work the browser must perform before painting the first meaningful pixel. This forms the basis of Google's <strong>Core Web Vitals</strong>:
+          </p>
+          <ul>
+            <li><strong>Largest Contentful Paint (LCP):</strong> Measures when the largest image or text block renders. Optimized by preloading critical hero images (<code>&lt;link rel="preload" as="image"&gt;</code>), serving modern AVIF/WebP formats, and caching HTML at edge CDNs.</li>
+            <li><strong>Cumulative Layout Shift (CLS):</strong> Measures unexpected layout jumps. Eliminated by always including explicit <code>width</code> and <code>height</code> attributes on images and aspect-ratio CSS boxes, preventing images from shoving text down the screen as they load.</li>
+            <li><strong>Interaction to Next Paint (INP):</strong> Measures responsiveness to user input (clicks, keypresses). Maintained by breaking up long JavaScript execution blocks into microtasks via <code>requestIdleCallback()</code> or <code>scheduler.yield()</code> to keep the main thread unblocked.</li>
+          </ul>
+
+          <h2 id="frequently-asked-questions">12. Frequently Asked Questions</h2>
+          <div class="faq-section">
+            <div class="faq-item">
+              <h3 class="faq-question">What is "Forced Synchronous Layout" (Layout Thrashing)?</h3>
+              <div class="faq-answer">
+                If JavaScript writes to the DOM (e.g., <code>element.style.width = '200px'</code>) and immediately queries a geometric property (e.g., <code>element.offsetHeight</code>), the browser cannot wait for its scheduled frame. It is forced to immediately execute a synchronous, costly layout calculation mid-script. Doing this repeatedly inside a loop destroys frame rates.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-question">Why does animating `margin` cause stutter while `transform` does not?</h3>
+              <div class="faq-answer">
+                Modifying <code>margin</code>, <code>top</code>, or <code>width</code> forces the engine to recalculate the Layout (geometry) of that element and all surrounding siblings, followed by a full Paint and Composite pass. Animating <code>transform</code> affects only the Compositing phase: the GPU moves the pre-rasterized layer in video memory without touching CPU layout.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-question">What does the `DOMContentLoaded` event signify?</h3>
+              <div class="faq-answer">
+                <code>DOMContentLoaded</code> fires when the initial HTML document has been completely parsed and the DOM is fully constructed, without waiting for stylesheets, images, and subframes to finish loading. In contrast, the <code>window.onload</code> event fires only after the HTML, all external stylesheets, images, and embedded assets have fully finished downloading.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-question">How does font loading affect the rendering pipeline?</h3>
+              <div class="faq-answer">
+                When external web fonts are used, the browser cannot paint text until the font file arrives, potentially causing a Flash of Invisible Text (FOIT). Using <code>font-display: swap</code> instructs the browser to immediately render text using a fallback system font, swapping in the custom web font smoothly once it downloads.
+              </div>
+            </div>
+          </div>
+
+          <!-- Editorial Conclusion -->
+          <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 3.5rem 0;">
+          <h2>Conclusion: Engineering in Harmony with the Engine</h2>
+          <p>
+            A web browser is not a magic canvas—it is a deterministic pipeline executing a sequence of well-defined stages: tokenization, DOM construction, CSS cascade calculation, render tree generation, layout geometry, raster paint, and GPU compositing.
+          </p>
+          <p>
+            When you understand this pipeline, performance is no longer a matter of guesswork or superstitious tips. You write CSS and JavaScript that cooperate with the browser rather than fighting against its architecture. In our upcoming essays, we will delve into the developer tooling that governs this code: version control with Git, containerization with Docker, and writing clean, scalable backend systems.
+          </p>
+        </article>
+      </div>
+    </div>
+
+    <!-- Related Articles Section -->
+    <section class="related-section">
+      <div class="container">
+        <div class="section-label-bar">
+          <span class="section-label">Related Architectural Reading</span>
+        </div>
+        <div class="article-feed-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+          <article class="article-card" data-category="networking">
+            <div class="card-media">
+              <a href="post-1.html"><img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=800&q=80" alt="Fiber cabling"></a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Networking // Post 01</span>
+              <h3 class="card-title"><a href="post-1.html">How the Internet Actually Works: A Complete Beginner's Guide</a></h3>
+              <p class="card-excerpt">Follow packets across undersea glass, BGP autonomous networks, and TCP state machines.</p>
+            </div>
+          </article>
+          <article class="article-card" data-category="networking">
+            <div class="card-media">
+              <a href="post-2.html"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80" alt="Server rack"></a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Networking // Post 02</span>
+              <h3 class="card-title"><a href="post-2.html">What Is DNS? How Domain Name Resolution Works</a></h3>
+              <p class="card-excerpt">Deconstruct root servers, recursive resolvers, zone authorities, and TTL caching.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; <span class="current-year">2026</span> Root Node. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="index.html">Home</a>
+          <a href="blog.html">Articles</a>
+          <a href="about.html">About</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="disclaimer.html">Disclaimer</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

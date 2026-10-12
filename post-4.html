@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git and GitHub Explained: A Practical Guide for Beginners &bull; Root Node</title>
+  <meta name="description" content="A practical, engineering-first guide to Git's content-addressable database, blobs, trees, commits, branching strategies, remotes, and pull requests.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+  <div id="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+      </a>
+      <nav class="primary-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link active">Articles</a>
+        <a href="blog.html?cat=programming" class="nav-link">Programming</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="blog.html" class="btn-nav-search">Search</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <header class="article-header-section">
+      <div class="container container-narrow">
+        <nav class="breadcrumb-nav">
+          <a href="index.html">Home</a> <span>/</span> <a href="blog.html">Articles</a> <span>/</span> <span>Post 04</span>
+        </nav>
+        <span class="post-category-tag">Programming // Version Control Systems</span>
+        <h1 class="article-hero-title">Git and GitHub Explained: A Practical Guide for Beginners</h1>
+        <p class="article-standfirst">
+          Git is not a magical cloud backup utility—it is a localized, content-addressable object store based on cryptographically hashed Directed Acyclic Graphs (DAGs). Here is how version control actually works.
+        </p>
+        <div class="article-meta-row">
+          <div class="author-chip">
+            <span class="author-name">By Julian Vance</span> <span>&bull; Senior Systems Architect</span>
+          </div>
+          <div>
+            <time datetime="2026-10-01">October 01, 2026</time> <span>&bull;</span> <span>16 min read</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="article-hero-image-wrap">
+        <figure>
+          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80" alt="Software engineering team collaborating over source code repositories">
+          <figcaption>Figure 1: Collaborative source tree integration across remote engineering teams.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="article-layout-grid">
+        <aside class="toc-sidebar">
+          <h2 class="toc-heading">Table of Contents</h2>
+          <ul class="toc-list">
+            <li><a href="#mental-model" class="toc-link">1. The Mental Model of Git</a></li>
+            <li><a href="#git-vs-github" class="toc-link">2. Git vs. GitHub Distinction</a></li>
+            <li><a href="#object-database" class="toc-link">3. The Immutable Object Database</a></li>
+            <li><a href="#three-trees" class="toc-link">4. The Three States of Git</a></li>
+            <li><a href="#branching-dags" class="toc-link">5. Branching and Merge Strategies</a></li>
+            <li><a href="#remotes-and-prs" class="toc-link">6. Remotes, Pull Requests & Reviews</a></li>
+            <li><a href="#conflict-resolution" class="toc-link">7. Mastering Merge Conflicts</a></li>
+            <li><a href="#essential-commands" class="toc-link">8. The Essential Command Suite</a></li>
+            <li><a href="#faqs" class="toc-link">9. Frequently Asked Questions</a></li>
+          </ul>
+        </aside>
+
+        <article class="prose-content">
+          <h2 id="mental-model">1. The Mental Model: Snapshots, Not Deltas</h2>
+          <p>
+            Traditional version control systems (like SVN or CVS) tracked software history as a base file followed by a list of sequential differences (deltas). If you had 10 versions of a file, the system calculated the math by replaying diff 1, diff 2, through diff 10.
+          </p>
+          <p>
+            Git, created by Linus Torvalds in 2005 to manage the Linux kernel codebase, completely abandoned this approach. Git thinks of its data more like a series of complete cryptographic snapshots of a miniature filesystem. Every time you commit, Git takes a picture of what all your files look like at that exact moment and stores a reference to that snapshot. To be efficient, if files have not changed, Git doesn’t store the file again—just a link to the previous identical file it already has stored.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" alt="Terminal command prompt displaying git status and branches">
+            <figcaption>Figure 2: Inspecting localized commit hashes and tree states via the terminal interface.</figcaption>
+          </figure>
+
+          <h2 id="git-vs-github">2. Git vs. GitHub: Clarifying the Separation</h2>
+          <p>
+            Beginner developers frequently confuse Git and GitHub as interchangeable synonyms. They are fundamentally separate entities:
+          </p>
+          <ul>
+            <li><strong>Git:</strong> An open-source, local command-line distributed version control tool installed on your personal machine. It requires zero internet access to create repositories, make commits, switch branches, or view history.</li>
+            <li><strong>GitHub:</strong> A commercial cloud hosting platform and web interface for Git repositories. GitHub provides remote storage, issue tracking, continuous integration (GitHub Actions), and code review workflows (Pull Requests). Competitors include GitLab, Sourcehut, and self-hosted Gitea.</li>
+          </ul>
+
+          <h2 id="object-database">3. The Immutable Object Database (.git)</h2>
+          <p>
+            When you type <code>git init</code>, Git creates a hidden directory named <code>.git</code>. Inside sits a key-value object store located in <code>.git/objects/</code>. Git has four fundamental object types, all keyed by their SHA-1/SHA-256 cryptographic checksums:
+          </p>
+          <ul>
+            <li><strong>Blobs:</strong> Store raw file content (data only, no filenames or permissions).</li>
+            <li><strong>Trees:</strong> Represent directory structures, mapping filenames to blob hashes and sub-tree hashes.</li>
+            <li><strong>Commits:</strong> Contain a pointer to a top-level Tree object, parent commit hashes, author metadata, timestamp, and the commit message.</li>
+            <li><strong>Annotated Tags:</strong> Permanent references to specific commits.</li>
+          </ul>
+
+          <pre><code>$ git cat-file -p HEAD
+tree 4b825dc642cb6eb9a060e54bf8d69288fbee4904
+parent a7f10b83b3d11b5e5b3f1c84138a0b0219c99182
+author Julian Vance &lt;julian@rootnode.internal&gt; 1760100000 -0400
+committer Julian Vance &lt;julian@rootnode.internal&gt; 1760100000 -0400
+
+Refactor TCP socket buffer allocation</code></pre>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="Silicon printed circuit board representing data trees and graphs">
+            <figcaption>Figure 3: Directed Acyclic Graphs (DAGs): how Git links commit parent pointers into history.</figcaption>
+          </figure>
+
+          <h2 id="three-trees">4. The Three States of Git</h2>
+          <p>
+            Git manages your code across three distinct areas on your local machine:
+          </p>
+          <ol>
+            <li><strong>Working Directory:</strong> The actual physical files you edit in your code editor.</li>
+            <li><strong>Staging Area (Index):</strong> A binary cache file (<code>.git/index</code>) that holds the exact snapshot prepared for your next commit.</li>
+            <li><strong>Repository (HEAD):</strong> The permanent history of committed objects in the <code>.git</code> database.</li>
+          </ol>
+
+          <h2 id="branching-dags">5. Branching and Merge Strategies</h2>
+          <p>
+            In Git, a branch is not an expensive duplication of folders. <strong>A branch is simply a 41-byte text file containing a 40-character commit hash.</strong> Creating a branch with <code>git branch feature</code> is instantaneous because it just writes a pointer to the current commit.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=1200&q=80" alt="Library archives representing version history and commit trees">
+            <figcaption>Figure 4: Archival branches: navigating divergent lineages and merging history safely.</figcaption>
+          </figure>
+
+          <h2 id="remotes-and-prs">6. Remotes, Pull Requests & Reviews</h2>
+          <p>
+            When collaborating, you configure a remote repository (conventionally named <code>origin</code>). Running <code>git push origin main</code> uploads your local object database blobs and updates the remote branch pointer.
+          </p>
+          <p>
+            A <strong>Pull Request (PR)</strong> is a GitHub construct requesting that repository maintainers merge your branch into the canonical trunk. High-quality PRs feature atomic commits, descriptive summaries, and automated test suite passes.
+          </p>
+
+          <h2 id="conflict-resolution">7. Mastering Merge Conflicts</h2>
+          <p>
+            Merge conflicts occur when two branches alter the exact same lines of code within a file since their common ancestor. Git refuses to guess which change is correct, generating conflict markers:
+          </p>
+          <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+const port = 8080;
+=======
+const port = 3000;
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-branch</code></pre>
+          <p>
+            Resolving conflicts simply requires opening the file, choosing the correct code, removing the conflict markers, staging with <code>git add</code>, and completing the merge commit.
+          </p>
+
+          <h2 id="essential-commands">8. The Essential Command Suite</h2>
+          <ul>
+            <li><code>git status</code> — Inspects working directory and index delta states.</li>
+            <li><code>git log --oneline --graph</code> — Visualizes the commit graph DAG.</li>
+            <li><code>git diff</code> — Compares unstaged working directory changes against the index.</li>
+            <li><code>git stash</code> — Shelves uncommitted modifications to allow branch switching.</li>
+          </ul>
+
+          <h2 id="faqs">9. Frequently Asked Questions</h2>
+          <div class="faq-section">
+            <div class="faq-item">
+              <h3 class="faq-question">What is the difference between `git merge` and `git rebase`?</h3>
+              <div class="faq-answer">
+                <code>merge</code> creates a non-destructive merge commit tying two branches together, preserving exact history. <code>rebase</code> replays your feature commits on top of the target branch tip, creating a clean linear history by generating brand new commit hashes.
+              </div>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">What does `git reset --hard` do?</h3>
+              <div class="faq-answer">
+                It resets the current branch pointer, the index, and overwrites all uncommitted working directory changes to match the specified commit. Use with caution, as uncommitted changes cannot be recovered.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; <span class="current-year">2026</span> Root Node. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="index.html">Home</a> <a href="blog.html">Articles</a> <a href="privacy.html">Privacy</a> <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="js/script.js"></script>
+</body>
+</html>

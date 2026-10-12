@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Articles &bull; Root Node</title>
+  <meta name="description" content="Explore all 15 in-depth essays, technical breakdowns, and architectural guides published by Root Node.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+        <span class="brand-tagline-micro">Editorial Dispatches</span>
+      </a>
+
+      <nav class="primary-nav" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link active">Articles</a>
+        <a href="blog.html?cat=networking" class="nav-link">Networking</a>
+        <a href="blog.html?cat=programming" class="nav-link">Programming</a>
+        <a href="blog.html?cat=web-dev" class="nav-link">Web Dev</a>
+        <a href="blog.html?cat=cybersecurity" class="nav-link">Cybersecurity</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="mobile-toggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <nav class="mobile-drawer" aria-label="Mobile Navigation">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="blog.html" class="nav-link active">All 15 Articles</a>
+    <a href="blog.html?cat=networking" class="nav-link">Networking</a>
+    <a href="blog.html?cat=programming" class="nav-link">Programming</a>
+    <a href="blog.html?cat=web-dev" class="nav-link">Web Development</a>
+    <a href="blog.html?cat=cybersecurity" class="nav-link">Cybersecurity</a>
+    <a href="about.html" class="nav-link">About Publication</a>
+    <a href="contact.html" class="nav-link">Contact Desk</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <span class="hero-meta-badge">Monograph Archive</span>
+        <h1 class="page-title">The Complete Technical Corpus</h1>
+        <p class="page-subtitle">
+          Fifteen detailed reference articles spanning internet protocols, software craftsmanship, operating system primitives, and defense-in-depth security.
+        </p>
+      </div>
+    </section>
+
+    <section class="editorial-grid-section">
+      <div class="container">
+        <!-- Live Search Box -->
+        <div class="search-container">
+          <input type="text" id="archive-search" class="search-input" placeholder="Type to filter articles by title, subject, or keyword..." aria-label="Search articles">
+        </div>
+
+        <!-- Category Filter Buttons -->
+        <nav class="category-filter-nav" aria-label="Category Filters">
+          <button class="filter-btn active" data-category="all">All Disciplines (15)</button>
+          <button class="filter-btn" data-category="networking">Networking (2)</button>
+          <button class="filter-btn" data-category="web-dev">Web Development (4)</button>
+          <button class="filter-btn" data-category="programming">Programming (3)</button>
+          <button class="filter-btn" data-category="cybersecurity">Cybersecurity (3)</button>
+          <button class="filter-btn" data-category="technology">Systems & Tech (3)</button>
+        </nav>
+
+        <!-- Zero Results Notice -->
+        <div id="no-results" style="display: none; padding: 3rem 1rem; text-align: center; color: var(--text-muted); font-family: var(--font-mono);">
+          <p>No articles matched your query. Try a broader search keyword or clear the filter.</p>
+        </div>
+
+        <!-- 15 Article Feed Cards Grid -->
+        <div class="article-feed-grid">
+          <!-- Post 1 -->
+          <article class="article-card" data-category="networking">
+            <div class="card-media">
+              <a href="post-1.html">
+                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=800&q=80" alt="Fiber cabling in datacenter" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Networking</span>
+              <h2 class="card-title"><a href="post-1.html">How the Internet Actually Works: A Complete Beginner's Guide</a></h2>
+              <p class="card-excerpt">A comprehensive, end-to-end breakdown of IP addresses, routers, packets, TCP/UDP sockets, subsea conduits, and the global routing mesh.</p>
+              <div class="card-footer">
+                <span>Article 01</span>
+                <span>18 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 2 -->
+          <article class="article-card" data-category="networking">
+            <div class="card-media">
+              <a href="post-2.html">
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80" alt="Server rack with networking hardware" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Networking</span>
+              <h2 class="card-title"><a href="post-2.html">What Is DNS? How Domain Name Resolution Works</a></h2>
+              <p class="card-excerpt">Deconstructing root server clusters, recursive resolvers, authoritative zones, record types (A, CNAME, MX), TTL, and DNSSEC.</p>
+              <div class="card-footer">
+                <span>Article 02</span>
+                <span>16 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 3 -->
+          <article class="article-card" data-category="web-dev">
+            <div class="card-media">
+              <a href="post-3.html">
+                <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" alt="Software development monitor" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Web Development</span>
+              <h2 class="card-title"><a href="post-3.html">How Websites Work: From Browser Request to Rendered Page</a></h2>
+              <p class="card-excerpt">How browsers convert network byte streams into DOM and CSSOM trees, calculate layout geometries, and rasterize smooth pixels to the screen.</p>
+              <div class="card-footer">
+                <span>Article 03</span>
+                <span>17 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 4 -->
+          <article class="article-card" data-category="programming">
+            <div class="card-media">
+              <a href="post-4.html">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Team reviewing version control branches" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Programming</span>
+              <h2 class="card-title"><a href="post-4.html">Git and GitHub Explained: A Practical Guide for Beginners</a></h2>
+              <p class="card-excerpt">Demystifying Git’s immutable object database, blobs, trees, commits, branching strategies, remotes, and conflict resolution.</p>
+              <div class="card-footer">
+                <span>Article 04</span>
+                <span>15 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 5 -->
+          <article class="article-card" data-category="programming">
+            <div class="card-media">
+              <a href="post-5.html">
+                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" alt="Terminal showing Python script" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Programming</span>
+              <h2 class="card-title"><a href="post-5.html">Python for Beginners: From Your First Script to Real Projects</a></h2>
+              <p class="card-excerpt">From environment setup and dynamic typing to dictionary manipulation, file streams, exception handling, and real CLI tools.</p>
+              <div class="card-footer">
+                <span>Article 05</span>
+                <span>14 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 6 -->
+          <article class="article-card" data-category="web-dev">
+            <div class="card-media">
+              <a href="post-6.html">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" alt="Network connectivity node diagram" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Web Development</span>
+              <h2 class="card-title"><a href="post-6.html">APIs Explained: How Applications Communicate With Each Other</a></h2>
+              <p class="card-excerpt">REST principles, HTTP semantics, token-based authentication, idempotency, rate limiting, and building resilient integrations.</p>
+              <div class="card-footer">
+                <span>Article 06</span>
+                <span>14 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 7 -->
+          <article class="article-card" data-category="cybersecurity">
+            <div class="card-media">
+              <a href="post-7.html">
+                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80" alt="Cybersecurity padlock concept" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Cybersecurity</span>
+              <h2 class="card-title"><a href="post-7.html">What Is Cybersecurity? Essential Concepts for Everyday Users</a></h2>
+              <p class="card-excerpt">Core paradigms of defense: confidentiality, integrity, availability, phishing vectors, credential hygiene, and incident defense.</p>
+              <div class="card-footer">
+                <span>Article 07</span>
+                <span>15 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 8 -->
+          <article class="article-card" data-category="cybersecurity">
+            <div class="card-media">
+              <a href="post-8.html">
+                <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=800&q=80" alt="Digital security key vault" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Cybersecurity</span>
+              <h2 class="card-title"><a href="post-8.html">How Password Managers Work and Why They Matter</a></h2>
+              <p class="card-excerpt">Zero-knowledge encrypted vaults, Argon2/PBKDF2 key derivation, entropy generation, and autofill attack vector analysis.</p>
+              <div class="card-footer">
+                <span>Article 08</span>
+                <span>14 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 9 -->
+          <article class="article-card" data-category="technology">
+            <div class="card-media">
+              <a href="post-9.html">
+                <img src="https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=800&q=80" alt="Linux operating system terminal" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Technology</span>
+              <h2 class="card-title"><a href="post-9.html">Linux Explained: Distributions, Terminals, and Everyday Use</a></h2>
+              <p class="card-excerpt">The UNIX philosophy, Linux kernel vs GNU userland, directory hierarchies (/etc, /var, /proc), permissions, and systemd services.</p>
+              <div class="card-footer">
+                <span>Article 09</span>
+                <span>15 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 10 -->
+          <article class="article-card" data-category="technology">
+            <div class="card-media">
+              <a href="post-10.html">
+                <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=800&q=80" alt="Library archives representing database indexes" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Technology</span>
+              <h2 class="card-title"><a href="post-10.html">How Databases Work: SQL, NoSQL, and Data Storage</a></h2>
+              <p class="card-excerpt">Relational engines, B-tree indexes, ACID transactional guarantees, normalization, document stores, and storage engine tradeoffs.</p>
+              <div class="card-footer">
+                <span>Article 10</span>
+                <span>15 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 11 -->
+          <article class="article-card" data-category="technology">
+            <div class="card-media">
+              <a href="post-11.html">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" alt="Cloud computing network infrastructure" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Technology</span>
+              <h2 class="card-title"><a href="post-11.html">Cloud Computing Explained: Servers, Storage, and Services</a></h2>
+              <p class="card-excerpt">Hypervisors, multi-tenant virtualization, object storage fabrics, availability zones, autoscaling loops, and billing realities.</p>
+              <div class="card-footer">
+                <span>Article 11</span>
+                <span>15 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 12 -->
+          <article class="article-card" data-category="web-dev">
+            <div class="card-media">
+              <a href="post-12.html">
+                <img src="https://images.unsplash.com/photo-1508873696983-2df5293cb395?auto=format&fit=crop&w=800&q=80" alt="Speed stopwatch measuring web performance" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Web Development</span>
+              <h2 class="card-title"><a href="post-12.html">Web Performance Optimization: Make Websites Faster</a></h2>
+              <p class="card-excerpt">Mastering Core Web Vitals (LCP, INP, CLS), critical rendering path tuning, modern asset compression, and caching strategies.</p>
+              <div class="card-footer">
+                <span>Article 12</span>
+                <span>16 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 13 -->
+          <article class="article-card" data-category="cybersecurity">
+            <div class="card-media">
+              <a href="post-13.html">
+                <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=800&q=80" alt="Hardware two-factor security key" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Cybersecurity</span>
+              <h2 class="card-title"><a href="post-13.html">What Is Two-Factor Authentication? A Practical Security Guide</a></h2>
+              <p class="card-excerpt">Comparing SMS codes, TOTP RFC 6238 mathematical counters, FIDO2 WebAuthn passkeys, and real recovery contingency designs.</p>
+              <div class="card-footer">
+                <span>Article 13</span>
+                <span>14 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 14 -->
+          <article class="article-card" data-category="programming">
+            <div class="card-media">
+              <a href="post-14.html">
+                <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80" alt="Industrial cargo containers representing Docker" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Programming</span>
+              <h2 class="card-title"><a href="post-14.html">Containers Explained: Docker, Images, and Deployment</a></h2>
+              <p class="card-excerpt">Linux cgroups, namespaces, copy-on-write union filesystems, multi-stage Dockerfiles, and reproducible production runtimes.</p>
+              <div class="card-footer">
+                <span>Article 14</span>
+                <span>15 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 15 -->
+          <article class="article-card" data-category="web-dev">
+            <div class="card-media">
+              <a href="post-15.html">
+                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80" alt="Notebook sketches and laptop for personal website" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <span class="post-category-tag">Web Development</span>
+              <h2 class="card-title"><a href="post-15.html">How to Build a Personal Website From Scratch</a></h2>
+              <p class="card-excerpt">A pragmatic roadmap: semantic HTML5, responsive CSS grid, zero-framework architecture, Git publishing, domain routing, and HTTPS.</p>
+              <div class="card-footer">
+                <span>Article 15</span>
+                <span>15 min read</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; <span class="current-year">2026</span> Root Node. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="disclaimer.html">Disclaimer</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

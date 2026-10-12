@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Containers Explained: Docker, Images, and Deployment &bull; Root Node</title>
+  <meta name="description" content="A deep architectural breakdown of containers: Linux namespaces, cgroups, OverlayFS, Dockerfile multi-stage builds, networking, and deployment.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+  <div id="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+      </a>
+      <nav class="primary-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link active">Articles</a>
+        <a href="blog.html?cat=programming" class="nav-link">Programming</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="blog.html" class="btn-nav-search">Search</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <header class="article-header-section">
+      <div class="container container-narrow">
+        <nav class="breadcrumb-nav">
+          <a href="index.html">Home</a> <span>/</span> <a href="blog.html">Articles</a> <span>/</span> <span>Post 14</span>
+        </nav>
+        <span class="post-category-tag">Programming // Container Runtimes</span>
+        <h1 class="article-hero-title">Containers Explained: Docker, Images, and Deployment</h1>
+        <p class="article-standfirst">
+          Containers are not lightweight virtual machines. They are regular Linux host processes isolated by kernel namespaces and constrained by control groups. Here is how modern containerization actually functions under the hood.
+        </p>
+        <div class="article-meta-row">
+          <div class="author-chip">
+            <span class="author-name">By Julian Vance</span> <span>&bull; Senior Systems Architect</span>
+          </div>
+          <div>
+            <time datetime="2026-08-16">August 16, 2026</time> <span>&bull;</span> <span>16 min read</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="article-hero-image-wrap">
+        <figure>
+          <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1600&q=80" alt="Industrial shipping cargo containers representing modular Docker architecture">
+          <figcaption>Figure 1: Standardization of transport: the maritime analogy behind standardized OCI container images.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="article-layout-grid">
+        <aside class="toc-sidebar">
+          <h2 class="toc-heading">Table of Contents</h2>
+          <ul class="toc-list">
+            <li><a href="#why-containers" class="toc-link">1. Solving "It Works on My Machine"</a></li>
+            <li><a href="#containers-vs-vms" class="toc-link">2. Containers vs. Virtual Machines</a></li>
+            <li><a href="#kernel-primitives" class="toc-link">3. Namespaces and Control Groups</a></li>
+            <li><a href="#union-fs" class="toc-link">4. OverlayFS & Copy-on-Write Layers</a></li>
+            <li><a href="#dockerfile-anatomy" class="toc-link">5. Writing Production Dockerfiles</a></li>
+            <li><a href="#multi-stage" class="toc-link">6. Multi-Stage Build Optimization</a></li>
+            <li><a href="#volumes-networking" class="toc-link">7. Volumes and Bridge Networking</a></li>
+            <li><a href="#docker-compose" class="toc-link">8. Multi-Container Orchestration</a></li>
+            <li><a href="#faqs" class="toc-link">9. Frequently Asked Questions</a></li>
+          </ul>
+        </aside>
+
+        <article class="prose-content">
+          <h2 id="why-containers">1. Solving "It Works on My Machine"</h2>
+          <p>
+            Historically, deploying software required ensuring the target production server had identical system libraries, runtime versions, environment variables, and configuration paths as the developer’s workstation. A minor discrepancy in an installed C shared library (e.g. glibc 2.31 vs 2.35) caused catastrophic runtime segfaults.
+          </p>
+          <p>
+            Containers bundle the application executable alongside its exact filesystem dependencies—every library, binary, and config file—into a single immutable, portable artifact that runs identically anywhere a Linux kernel exists.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" alt="Server chassis running container daemon runtimes">
+            <figcaption>Figure 2: Bare metal host servers running thousands of isolated container worker processes.</figcaption>
+          </figure>
+
+          <h2 id="containers-vs-vms">2. Containers vs. Virtual Machines</h2>
+          <p>
+            A <strong>Virtual Machine</strong> runs a complete guest operating system—including its own dedicated kernel, memory manager, device drivers, and system services—on top of a hypervisor. This introduces heavy CPU/RAM overhead and multi-minute boot times.
+          </p>
+          <p>
+            A <strong>Container</strong> is simply a regular Linux host process that shares the host operating system’s kernel. Because there is no guest kernel to boot, containers instantiate in milliseconds and consume virtually zero idle memory overhead.
+          </p>
+
+          <h2 id="kernel-primitives">3. Linux Kernel Primitives: Namespaces and cgroups</h2>
+          <p>
+            Docker did not invent container technology; it built an ergonomic user experience around two foundational Linux kernel features:
+          </p>
+          <ul>
+            <li><strong>Namespaces (Isolation):</strong> Determines what a process can <em>see</em>. Namespaces isolate process IDs (PID), network interfaces and routing tables (NET), filesystem mount points (MNT), inter-process communication (IPC), hostnames (UTS), and user mappings (USER).</li>
+            <li><strong>Control Groups (cgroups):</strong> Determines what a process can <em>use</em>. Enforces strict hardware resource quotas on CPU shares, physical RAM limits, disk I/O bandwidth, and network priority.</li>
+          </ul>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" alt="Terminal shell prompt inspecting running Docker containers">
+            <figcaption>Figure 3: Inspecting container layers, image digests, and process metrics via docker CLI.</figcaption>
+          </figure>
+
+          <h2 id="union-fs">4. OverlayFS & Copy-on-Write (CoW) Layers</h2>
+          <p>
+            Container images are composed of stacked read-only filesystem layers managed by <strong>OverlayFS</strong>.
+          </p>
+          <p>
+            When a container launches, Docker places a thin, mutable <strong>Read-Write container layer</strong> on top of the immutable image layers. If the container modifies an existing configuration file, OverlayFS copies the file up to the read-write layer (Copy-on-Write) before editing it. When the container is destroyed, that thin read-write layer is deleted, leaving the underlying base image pristine.
+          </p>
+
+          <h2 id="dockerfile-anatomy">5. Writing Production Dockerfiles</h2>
+          <p>
+            A <code>Dockerfile</code> contains procedural instructions for compiling an image:
+          </p>
+          <pre><code>FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+USER node
+EXPOSE 3000
+CMD ["node", "server.js"]</code></pre>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="Silicon printed circuit architecture representing optimized build layers">
+            <figcaption>Figure 4: Algorithmic caching: preserving immutable build layers across deployment cycles.</figcaption>
+          </figure>
+
+          <h2 id="multi-stage">6. Multi-Stage Build Optimization</h2>
+          <p>
+            To keep production images tiny and secure, use <strong>multi-stage builds</strong>. Compile your code inside a heavy build stage equipped with compilers and SDKs, and copy only the compiled binary into a lightweight minimal production image:
+          </p>
+          <pre><code># Stage 1: Build binary in Go
+FROM golang:1.22-alpine AS builder
+WORKDIR /src
+COPY . .
+RUN CGO_ENABLED=0 go build -o /bin/app
+
+# Stage 2: Minimal final runtime image (under 15MB!)
+FROM alpine:3.19
+COPY --from=builder /bin/app /bin/app
+USER nobody
+ENTRYPOINT ["/bin/app"]</code></pre>
+
+          <h2 id="volumes-networking">7. Volumes and Bridge Networking</h2>
+          <p>
+            Containers are ephemeral by default—when a container stops, data written to its local filesystem vanishes. To persist database records, attach a <strong>Docker Volume</strong>:
+          </p>
+          <pre><code>$ docker run -d -v postgres_data:/var/lib/postgresql/data postgres:16</code></pre>
+
+          <h2 id="docker-compose">8. Multi-Container Orchestration with Docker Compose</h2>
+          <p>
+            Modern applications involve web servers, background workers, and databases working together. <code>docker-compose.yml</code> coordinates these dependencies declaratively:
+          </p>
+          <pre><code>services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgres://root:secret@db:5432/app
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:</code></pre>
+
+          <h2 id="faqs">9. Frequently Asked Questions</h2>
+          <div class="faq-section">
+            <div class="faq-item">
+              <h3 class="faq-question">Why shouldn't I run containers as the `root` user?</h3>
+              <div class="faq-answer">
+                If an application inside a container is compromised by a remote code execution exploit, running as root inside the container makes container-escape vulnerabilities dramatically easier, potentially granting the attacker root control of the host machine.
+              </div>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">What is Kubernetes (k8s)?</h3>
+              <div class="faq-answer">
+                Docker manages containers on a single host. Kubernetes is an enterprise orchestration platform that automates container deployment, autoscaling, load balancing, and self-healing across hundreds of physical servers in a cluster.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; <span class="current-year">2026</span> Root Node. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="index.html">Home</a> <a href="blog.html">Articles</a> <a href="privacy.html">Privacy</a> <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="js/script.js"></script>
+</body>
+</html>

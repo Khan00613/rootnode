@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Databases Work: SQL, NoSQL, and Data Storage &bull; Root Node</title>
+  <meta name="description" content="A deep architectural dive into database engines: B-tree indexes, write-ahead logs, ACID transaction guarantees, relational schemas, document stores, and query planners.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+  <div id="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+      </a>
+      <nav class="primary-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link active">Articles</a>
+        <a href="blog.html?cat=technology" class="nav-link">Technology</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="blog.html" class="btn-nav-search">Search</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <header class="article-header-section">
+      <div class="container container-narrow">
+        <nav class="breadcrumb-nav">
+          <a href="index.html">Home</a> <span>/</span> <a href="blog.html">Articles</a> <span>/</span> <span>Post 10</span>
+        </nav>
+        <span class="post-category-tag">Technology // Database Engines</span>
+        <h1 class="article-hero-title">How Databases Work: SQL, NoSQL, and Data Storage</h1>
+        <p class="article-standfirst">
+          Databases are not simple file folders with query wrappers. They are complex disk-paged storage managers that guarantee durability against power loss, resolve concurrent locks, and optimize execution trees using relational algebra.
+        </p>
+        <div class="article-meta-row">
+          <div class="author-chip">
+            <span class="author-name">By Julian Vance</span> <span>&bull; Senior Systems Architect</span>
+          </div>
+          <div>
+            <time datetime="2026-09-06">September 06, 2026</time> <span>&bull;</span> <span>16 min read</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="article-hero-image-wrap">
+        <figure>
+          <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=1600&q=80" alt="Massive library archival stacks representing indexed relational records">
+          <figcaption>Figure 1: Indexing architectures: organizing vast volumes of records for microsecond logarithmic lookup.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="article-layout-grid">
+        <aside class="toc-sidebar">
+          <h2 class="toc-heading">Table of Contents</h2>
+          <ul class="toc-list">
+            <li><a href="#why-databases" class="toc-link">1. What Problem Databases Solve</a></li>
+            <li><a href="#storage-engine" class="toc-link">2. Storage Engines & B-Trees</a></li>
+            <li><a href="#wal-durability" class="toc-link">3. Write-Ahead Logs & Durability</a></li>
+            <li><a href="#acid-guarantees" class="toc-link">4. ACID Transaction Guarantees</a></li>
+            <li><a href="#sql-relational" class="toc-link">5. The Relational Model & SQL</a></li>
+            <li><a href="#nosql-paradigms" class="toc-link">6. NoSQL Paradigms & CAP Theorem</a></li>
+            <li><a href="#query-planners" class="toc-link">7. Query Planners & Cost Estimators</a></li>
+            <li><a href="#sample-schema" class="toc-link">8. Real Relational Schema Example</a></li>
+            <li><a href="#faqs" class="toc-link">9. Frequently Asked Questions</a></li>
+          </ul>
+        </aside>
+
+        <article class="prose-content">
+          <h2 id="why-databases">1. What Problem Databases Solve</h2>
+          <p>
+            Why can't applications simply write data into a JSON file on disk using standard filesystem APIs? If two concurrent threads write to that file simultaneously, data corruption occurs. If the server loses power midway through writing a 10MB file, the file is corrupted. If the file grows to 100GB, searching for a specific customer ID requires scanning through the entire file sequentially, exhausting RAM and locking the CPU.
+          </p>
+          <p>
+            Database Management Systems (DBMS) solve this by providing transactional consistency, high-speed indexed retrieval, concurrent isolation, and durable persistence guarantees.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" alt="Enterprise datacenter disk storage array">
+            <figcaption>Figure 2: Non-volatile NVMe disk arrays servicing buffered database transactions.</figcaption>
+          </figure>
+
+          <h2 id="storage-engine">2. Storage Engines and B-Tree Indexing</h2>
+          <p>
+            At the heart of relational database engines (such as PostgreSQL and MySQL InnoDB) is the <strong>B-Tree</strong> (and B+Tree) data structure.
+          </p>
+          <p>
+            Data on disk is stored in fixed-size blocks called <strong>Pages</strong> (typically 8KB or 16KB). A B+Tree is a self-balancing search tree where internal nodes contain keys guiding searches to child nodes, and all actual record pointers reside in leaf nodes linked in a contiguous doubly linked list.
+          </p>
+          <p>
+            Because of this branching structure, searching through a table with 100 million rows requires inspecting only 3 or 4 pages from disk—reducing search time from 30 seconds of sequential scanning down to 2 milliseconds.
+          </p>
+
+          <h2 id="wal-durability">3. Write-Ahead Logs (WAL) and Crash Recovery</h2>
+          <p>
+            Writing data directly into random locations in B-Tree data files on disk is slow because random disk I/O introduces seek latency.
+          </p>
+          <p>
+            Database engines resolve this through a <strong>Write-Ahead Log (WAL)</strong>. When an <code>INSERT</code> or <code>UPDATE</code> occurs, the database first writes the change sequentially to an append-only log file on disk and confirms the commit to the client. The actual data pages in memory (buffer pool) are marked "dirty" and lazily flushed to disk in the background. If power cuts out abruptly, the database reboots, replays the WAL log, and restores total consistency.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" alt="Terminal terminal displaying SQL query performance plans">
+            <figcaption>Figure 3: Analyzing query execution trees and index scans with EXPLAIN ANALYZE.</figcaption>
+          </figure>
+
+          <h2 id="acid-guarantees">4. ACID Transaction Guarantees</h2>
+          <p>
+            Relational databases are celebrated for providing <strong>ACID</strong> transactional guarantees:
+          </p>
+          <ul>
+            <li><strong>Atomicity:</strong> "All or nothing." If a transaction moves money between accounts, debiting Account A and crediting Account B, either both operations succeed or both are completely rolled back.</li>
+            <li><strong>Consistency:</strong> The database transitions from one valid state to another, enforcing foreign keys, unique constraints, and schema rules.</li>
+            <li><strong>Isolation:</strong> Concurrent transactions execute without interfering with one another, managed through isolation levels (Read Committed, Repeatable Read, Serializable).</li>
+            <li><strong>Durability:</strong> Once a transaction commits, its modifications are permanently recorded in non-volatile storage and survive power outages.</li>
+          </ul>
+
+          <h2 id="sql-relational">5. The Relational Model & SQL</h2>
+          <p>
+            Formulated by Edgar F. Codd in 1970, the relational model organizes data into mathematical relations (tables) composed of tuples (rows) and attributes (columns).
+          </p>
+          <p>
+            <strong>Structured Query Language (SQL)</strong> is a declarative language: you specify <em>what data</em> you want, not the step-by-step procedural instructions for how the CPU should fetch it.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="Silicon circuitry representing relational database query optimizer logic">
+            <figcaption>Figure 4: Computational pipelines executing relational join algorithms in memory.</figcaption>
+          </figure>
+
+          <h2 id="nosql-paradigms">6. NoSQL Paradigms & The CAP Theorem</h2>
+          <p>
+            As web applications scaled horizontally across distributed global clusters, traditional single-node relational databases faced scaling bottlenecks. This birthed NoSQL:
+          </p>
+          <ul>
+            <li><strong>Document Stores (MongoDB):</strong> Store hierarchical JSON-like documents. Flexible schemas, suitable for rapidly changing data structures.</li>
+            <li><strong>Key-Value Stores (Redis):</strong> Ultra-fast in-memory hash tables. Ideal for caching, session storage, and rate limiting.</li>
+            <li><strong>Wide-Column (Cassandra, Bigtable):</strong> Distributed horizontally partitioned datasets handling billions of write-heavy events.</li>
+          </ul>
+
+          <h2 id="query-planners">7. Query Planners & Cost Estimators</h2>
+          <p>
+            When you execute a complex SQL query with multiple <code>JOIN</code> clauses, the database doesn't just run it blindly. The <strong>Query Planner</strong> evaluates different execution paths (Index Scan vs Sequential Scan, Hash Join vs Nested Loop vs Merge Join), calculates mathematical cost estimates based on table statistics, and selects the optimal path.
+          </p>
+
+          <h2 id="sample-schema">8. Real Relational Schema Example</h2>
+          <pre><code>CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE articles (
+    id SERIAL PRIMARY KEY,
+    author_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    body TEXT NOT NULL,
+    published_at TIMESTAMP WITH TIME ZONE
+);
+
+CREATE INDEX idx_articles_slug ON articles(slug);</code></pre>
+
+          <h2 id="faqs">9. Frequently Asked Questions</h2>
+          <div class="faq-section">
+            <div class="faq-item">
+              <h3 class="faq-question">What is the difference between an Index Scan and a Sequential Scan?</h3>
+              <div class="faq-answer">
+                A Sequential Scan (Seq Scan) reads every single page in the table from start to finish. An Index Scan traverses the B-Tree index to locate only the exact pages holding matching records, saving thousands of disk reads.
+              </div>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">What is Database Normalization?</h3>
+              <div class="faq-answer">
+                Normalization (such as 3NF - Third Normal Form) is the process of organizing database schemas to eliminate redundant duplicate data and prevent update anomalies by dividing tables and establishing foreign key relationships.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; <span class="current-year">2026</span> Root Node. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="index.html">Home</a> <a href="blog.html">Articles</a> <a href="privacy.html">Privacy</a> <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="js/script.js"></script>
+</body>
+</html>

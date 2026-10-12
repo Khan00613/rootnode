@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Root Node — Understanding the Systems Behind Computing & the Web</title>
+  <meta name="description" content="Root Node is an independent editorial publication exploring the fundamentals of computing, networking, software engineering, cybersecurity, and digital infrastructure.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+        <span class="brand-tagline-micro">Editorial Dispatches</span>
+      </a>
+
+      <nav class="primary-nav" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="blog.html" class="nav-link">Articles</a>
+        <a href="blog.html?cat=networking" class="nav-link">Networking</a>
+        <a href="blog.html?cat=programming" class="nav-link">Programming</a>
+        <a href="blog.html?cat=web-dev" class="nav-link">Web Dev</a>
+        <a href="blog.html?cat=cybersecurity" class="nav-link">Cybersecurity</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="blog.html" class="btn-nav-search" title="Search all articles">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span>Search</span>
+        </a>
+        <button class="mobile-toggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <nav class="mobile-drawer" aria-label="Mobile Navigation">
+    <a href="index.html" class="nav-link active">Home</a>
+    <a href="blog.html" class="nav-link">All 15 Articles</a>
+    <a href="blog.html?cat=networking" class="nav-link">Networking</a>
+    <a href="blog.html?cat=programming" class="nav-link">Programming</a>
+    <a href="blog.html?cat=web-dev" class="nav-link">Web Development</a>
+    <a href="blog.html?cat=cybersecurity" class="nav-link">Cybersecurity</a>
+    <a href="about.html" class="nav-link">About Publication</a>
+    <a href="contact.html" class="nav-link">Contact Desk</a>
+    <a href="privacy.html" class="nav-link">Privacy Policy</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Editorial Hero Section -->
+    <section class="hero-editorial">
+      <div class="container">
+        <span class="hero-meta-badge">Volume I &bull; Foundations of Computing</span>
+        <h1 class="hero-title">Understanding the systems behind the digital world.</h1>
+        <p class="hero-description">
+          An independent, human-operated technical journal. We examine how networks route packets, how kernels execute code, how browsers construct pixels, and how foundational architecture shapes modern computing.
+        </p>
+        <div class="hero-meta-bar">
+          <span><strong>15</strong> In-Depth Monograph Essays</span>
+          <span>&bull;</span>
+          <span><strong>Zero</strong> Synthetic Content Fluff</span>
+          <span>&bull;</span>
+          <span><strong>100%</strong> Architectural Precision</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Story Section -->
+    <section class="featured-section">
+      <div class="container">
+        <div class="section-label-bar">
+          <span class="section-label">Lead Editorial Feature</span>
+          <span class="section-label">Issue 01</span>
+        </div>
+
+        <div class="featured-story-grid">
+          <div class="featured-visual">
+            <a href="post-1.html">
+              <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80" alt="Server room cabling and fiber optic networking equipment" loading="eager">
+            </a>
+            <div class="featured-visual-caption">Physical network infrastructure: Transatlantic fiber trunk termination and switching architecture.</div>
+          </div>
+
+          <div class="featured-content">
+            <a href="blog.html?cat=networking" class="post-category-tag">Networking // Deep Dive</a>
+            <h2 class="featured-title">
+              <a href="post-1.html">How the Internet Actually Works: A Complete Beginner's Guide</a>
+            </h2>
+            <p class="featured-excerpt">
+              From subsea fiber conduits and BGP autonomous systems to the precise mechanics of TCP windowing and TLS 1.3 handshakes. A systematic walkthrough of what physical and logical events transpire every time you hit Enter in an address bar.
+            </p>
+            <div class="post-meta-inline">
+              <span>Julian Vance</span>
+              <span class="bullet">&bull;</span>
+              <time datetime="2026-10-10">October 10, 2026</time>
+              <span class="bullet">&bull;</span>
+              <span>18 min read</span>
+              <span class="bullet">&bull;</span>
+              <span>3,400 words</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest Articles Feed Grid -->
+    <section class="editorial-grid-section">
+      <div class="container">
+        <div class="section-label-bar">
+          <span class="section-label">Recent Monograph Articles</span>
+          <a href="blog.html" class="nav-link" style="font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase;">View All 15 Articles &rarr;</a>
+        </div>
+
+        <div class="article-feed-grid">
+          <!-- Article 2 -->
+          <article class="article-card" data-category="networking">
+            <div class="card-media">
+              <a href="post-2.html">
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80" alt="Enterprise datacenter servers" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <a href="blog.html?cat=networking" class="post-category-tag">Networking</a>
+              <h3 class="card-title"><a href="post-2.html">What Is DNS? How Domain Name Resolution Works</a></h3>
+              <p class="card-excerpt">Dissecting recursive resolvers, root name server clusters, TLD authorities, and the anatomy of record propagation across global caches.</p>
+              <div class="card-footer">
+                <span>Oct 08, 2026</span>
+                <span>16 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="article-card" data-category="web-dev">
+            <div class="card-media">
+              <a href="post-3.html">
+                <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" alt="Developer desk with code on screen" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <a href="blog.html?cat=web-dev" class="post-category-tag">Web Development</a>
+              <h3 class="card-title"><a href="post-3.html">How Websites Work: From Browser Request to Rendered Page</a></h3>
+              <p class="card-excerpt">The complete lifecycle of DOM parsing, CSSOM calculation, render tree synthesis, layout passes, and compositing on modern GPU pipelines.</p>
+              <div class="card-footer">
+                <span>Oct 05, 2026</span>
+                <span>17 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="article-card" data-category="programming">
+            <div class="card-media">
+              <a href="post-4.html">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Engineers collaborating over laptop" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <a href="blog.html?cat=programming" class="post-category-tag">Programming</a>
+              <h3 class="card-title"><a href="post-4.html">Git and GitHub Explained: A Practical Guide for Beginners</a></h3>
+              <p class="card-excerpt">Understanding content-addressable object databases, directed acyclic graphs (DAGs), staging mechanics, and merge conflicts.</p>
+              <div class="card-footer">
+                <span>Oct 01, 2026</span>
+                <span>15 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 5 -->
+          <article class="article-card" data-category="programming">
+            <div class="card-media">
+              <a href="post-5.html">
+                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" alt="Abstract programming code in terminal" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <a href="blog.html?cat=programming" class="post-category-tag">Programming</a>
+              <h3 class="card-title"><a href="post-5.html">Python for Beginners: From Your First Script to Real Projects</a></h3>
+              <p class="card-excerpt">From dynamic typing fundamentals and virtual environments to idiomatic data structures, file I/O, and writing resilient command-line tooling.</p>
+              <div class="card-footer">
+                <span>Sep 27, 2026</span>
+                <span>14 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 6 -->
+          <article class="article-card" data-category="web-dev">
+            <div class="card-media">
+              <a href="post-6.html">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" alt="Global connected network lines" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <a href="blog.html?cat=web-dev" class="post-category-tag">Web Development</a>
+              <h3 class="card-title"><a href="post-6.html">APIs Explained: How Applications Communicate With Each Other</a></h3>
+              <p class="card-excerpt">HTTP verbs, JSON payloads, idempotent mutations, stateless authentication, pagination tokens, and webhook reliability engineering.</p>
+              <div class="card-footer">
+                <span>Sep 22, 2026</span>
+                <span>14 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 7 -->
+          <article class="article-card" data-category="cybersecurity">
+            <div class="card-media">
+              <a href="post-7.html">
+                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80" alt="Cybersecurity hardware lock" loading="lazy">
+              </a>
+            </div>
+            <div class="card-body">
+              <a href="blog.html?cat=cybersecurity" class="post-category-tag">Cybersecurity</a>
+              <h3 class="card-title"><a href="post-7.html">What Is Cybersecurity? Essential Concepts for Everyday Users</a></h3>
+              <p class="card-excerpt">The CIA triad in practice: defense-in-depth, threat modeling, operational credential hygiene, and practical adversary mitigation.</p>
+              <div class="card-footer">
+                <span>Sep 18, 2026</span>
+                <span>15 min read</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Editor's Picks & Category Exploration -->
+    <section class="featured-section" style="background: var(--bg-surface);">
+      <div class="container">
+        <div class="section-label-bar">
+          <span class="section-label">Editorial Focus Areas</span>
+          <span class="section-label">Core Curriculum</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+          <div style="padding: 1.5rem; background: var(--bg-primary); border: 1px solid var(--border-subtle);">
+            <h4 style="font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-primary);">Systems & Infrastructure</h4>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              Understanding Linux kernels, container namespaces, cloud compute fabrics, and distributed database consistency.
+            </p>
+            <a href="post-9.html" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-sage); text-decoration: none;">Explore Linux Explained &rarr;</a>
+          </div>
+
+          <div style="padding: 1.5rem; background: var(--bg-primary); border: 1px solid var(--border-subtle);">
+            <h4 style="font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-primary);">Defensive Security</h4>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              Cryptographic vaults, multi-factor hardware tokens, zero-knowledge proofs, and realistic digital self-defense.
+            </p>
+            <a href="post-8.html" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-sage); text-decoration: none;">Explore Password Managers &rarr;</a>
+          </div>
+
+          <div style="padding: 1.5rem; background: var(--bg-primary); border: 1px solid var(--border-subtle);">
+            <h4 style="font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-primary);">Web Architecture</h4>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              Browser rendering pipelines, Core Web Vitals optimization, asset budgeting, and resilient vanilla web development.
+            </p>
+            <a href="post-12.html" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-sage); text-decoration: none;">Explore Web Performance &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modest Newsletter Section -->
+    <section class="editorial-grid-section" style="border-top: 1px solid var(--border-subtle);">
+      <div class="container container-narrow" style="text-align: center;">
+        <span class="hero-meta-badge">Editorial Dispatch</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.1rem; margin-bottom: 1rem; color: var(--text-primary);">The Root Node Letter</h2>
+        <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem;">
+          Twice per month, we publish rigorous analyses on network architecture, operating system internals, and clean software engineering. Zero promotional pitches. Zero sponsored clutter.
+        </p>
+
+        <form class="newsletter-form" style="max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="email" placeholder="name@domain.com" required style="flex-grow: 1; background: var(--bg-surface); border: 1px solid var(--border-medium); color: var(--text-primary); padding: 0.8rem 1rem; font-family: var(--font-sans); border-radius: var(--radius-sm);">
+            <button type="submit" class="btn-primary">Subscribe</button>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-align: left;">
+            We respect your inbox. You can unsubscribe at any time. Read our <a href="privacy.html" style="color: var(--text-secondary);">Privacy Policy</a>.
+          </span>
+          <div class="newsletter-msg" style="display: none;"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-wrapper">
+            <span class="brand-symbol">/</span>
+            <span class="brand-name">Root Node</span>
+          </a>
+          <p>
+            An independent publication dedicated to unpacking the foundational technologies that power the internet, computing systems, and digital engineering.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Sections</h4>
+          <ul class="footer-links">
+            <li><a href="blog.html?cat=networking">Networking</a></li>
+            <li><a href="blog.html?cat=programming">Programming</a></li>
+            <li><a href="blog.html?cat=web-dev">Web Development</a></li>
+            <li><a href="blog.html?cat=cybersecurity">Cybersecurity</a></li>
+            <li><a href="blog.html?cat=technology">Systems & Tech</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Publication</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">About Root Node</a></li>
+            <li><a href="blog.html">All 15 Articles</a></li>
+            <li><a href="contact.html">Editorial Contact</a></li>
+            <li><a href="about.html#standards">Editorial Standards</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Legal & Compliance</h4>
+          <ul class="footer-links">
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="disclaimer.html">Disclaimer & Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; <span class="current-year">2026</span> Root Node. All rights reserved.
+        </div>
+        <div class="footer-bottom-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="disclaimer.html">Disclaimer</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

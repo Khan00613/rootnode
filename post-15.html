@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Build a Personal Website From Scratch &bull; Root Node</title>
+  <meta name="description" content="A complete, pragmatic guide to building a fast, accessible personal website from scratch using pure semantic HTML5, modern CSS Grid, and zero-framework architecture.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+  <div id="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+      </a>
+      <nav class="primary-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link active">Articles</a>
+        <a href="blog.html?cat=web-dev" class="nav-link">Web Dev</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="blog.html" class="btn-nav-search">Search</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <header class="article-header-section">
+      <div class="container container-narrow">
+        <nav class="breadcrumb-nav">
+          <a href="index.html">Home</a> <span>/</span> <a href="blog.html">Articles</a> <span>/</span> <span>Post 15</span>
+        </nav>
+        <span class="post-category-tag">Web Development // Practical Craft</span>
+        <h1 class="article-hero-title">How to Build a Personal Website From Scratch</h1>
+        <p class="article-standfirst">
+          Do not surrender your online identity to social media algorithms or rent it from walled platforms. Here is how to construct a fast, permanent, accessible personal home on the open web using semantic HTML and CSS.
+        </p>
+        <div class="article-meta-row">
+          <div class="author-chip">
+            <span class="author-name">By Julian Vance</span> <span>&bull; Senior Systems Architect</span>
+          </div>
+          <div>
+            <time datetime="2026-08-10">August 10, 2026</time> <span>&bull;</span> <span>16 min read</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="article-hero-image-wrap">
+        <figure>
+          <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1600&q=80" alt="Notebook design sketches and laptop for website development">
+          <figcaption>Figure 1: The personal workshop: sketching information hierarchy before writing a single line of markup.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="article-layout-grid">
+        <aside class="toc-sidebar">
+          <h2 class="toc-heading">Table of Contents</h2>
+          <ul class="toc-list">
+            <li><a href="#digital-sovereignty" class="toc-link">1. Reclaiming Digital Sovereignty</a></li>
+            <li><a href="#planning-structure" class="toc-link">2. Purpose & Information Hierarchy</a></li>
+            <li><a href="#domain-dns" class="toc-link">3. Choosing Domains & DNS</a></li>
+            <li><a href="#semantic-markup" class="toc-link">4. Semantic HTML5 Foundations</a></li>
+            <li><a href="#modern-css" class="toc-link">5. Modern CSS: Grid & Variables</a></li>
+            <li><a href="#vanilla-js" class="toc-link">6. Purposeful Vanilla JavaScript</a></li>
+            <li><a href="#accessibility-seo" class="toc-link">7. Accessibility & SEO Essentials</a></li>
+            <li><a href="#git-deployment" class="toc-link">8. Deployment via Git & HTTPS</a></li>
+            <li><a href="#launch-checklist" class="toc-link">9. 10-Step Launch Checklist</a></li>
+            <li><a href="#faqs" class="toc-link">10. Frequently Asked Questions</a></li>
+          </ul>
+        </aside>
+
+        <article class="prose-content">
+          <h2 id="digital-sovereignty">1. Reclaiming Personal Digital Sovereignty</h2>
+          <p>
+            For the past decade, internet users have outsourced their personal expression to centralized social media feeds. In those walled gardens, you do not own your domain, you do not control the presentation of your writing, and your essays compete against algorithmic rage-bait for fleeting seconds of user attention.
+          </p>
+          <p>
+            A personal website is an enduring digital estate. When you own a domain name and publish static web files, your writing remains accessible 15 years from now, resilient against platform bankruptcies, algorithm shifts, and corporate acquisitions.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80" alt="Minimal desktop screen with source code editor">
+            <figcaption>Figure 2: Pure editorial code: structuring lean, zero-dependency source files.</figcaption>
+          </figure>
+
+          <h2 id="planning-structure">2. Purpose & Information Hierarchy</h2>
+          <p>
+            Before opening a text editor, clarify the purpose of your website:
+          </p>
+          <ul>
+            <li>Is it an engineering portfolio showcasing open-source projects?</li>
+            <li>A long-form technical journal documenting systems research?</li>
+            <li>A simple digital business card with your public PGP key and contact information?</li>
+          </ul>
+          <p>
+            Resist the temptation to install a 500MB JavaScript framework, dozens of npm packages, and a complex build pipeline for a site that only needs to display text and images.
+          </p>
+
+          <h2 id="domain-dns">3. Choosing a Domain Name & Independent DNS</h2>
+          <p>
+            Choose a personal domain that you intend to keep for decades. A simple <code>firstname.dev</code>, <code>lastname.org</code>, or evocative technical name works best.
+          </p>
+          <p>
+            Keep your domain registrar (e.g. Porkbun, Namecheap, Cloudflare Registrar) completely separate from your web hosting provider. This ensures that if you ever decide to switch hosting servers, your domain registration remains safely in your hands.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" alt="Terminal code window compiling static HTML site">
+            <figcaption>Figure 3: Version controlling static HTML pages in local Git repositories.</figcaption>
+          </figure>
+
+          <h2 id="semantic-markup">4. Semantic HTML5 Foundations</h2>
+          <p>
+            Semantic HTML communicates meaning to browsers, search engines, and assistive screen readers:
+          </p>
+          <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Julian Vance &bull; Systems Engineer&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;...&lt;/header&gt;
+  &lt;main&gt;
+    &lt;article&gt;
+      &lt;h1&gt;Building Resilient Distributed Systems&lt;/h1&gt;
+      &lt;p&gt;Prose goes here...&lt;/p&gt;
+    &lt;/article&gt;
+  &lt;/main&gt;
+  &lt;footer&gt;...&lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+          <h2 id="modern-css">5. Modern CSS: Custom Properties and CSS Grid</h2>
+          <p>
+            You do not need Tailwind or Bootstrap to build clean, responsive designs. Modern CSS natively provides:
+          </p>
+          <ul>
+            <li><strong>CSS Custom Properties (Variables):</strong> Centralize color palettes and spacing tokens.</li>
+            <li><strong>CSS Grid:</strong> Clean two-dimensional page layouts without messy float hacks or nested wrappers.</li>
+            <li><strong>Flexbox:</strong> Perfect one-dimensional alignment for navigation bars and metadata rows.</li>
+            <li><strong>Max Reading Width:</strong> Keeping prose width constrained to <code>65ch</code> to <code>70ch</code> ensures comfortable line lengths for human reading.</li>
+          </ul>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=1200&q=80" alt="Archival books and organized library catalog">
+            <figcaption>Figure 4: Enduring digital longevity: static HTML pages will remain readable decades into the future.</figcaption>
+          </figure>
+
+          <h2 id="vanilla-js">6. Purposeful Vanilla JavaScript</h2>
+          <p>
+            Add JavaScript only when it provides genuine functional value: a mobile menu toggle, a reading progress indicator on long essays, or a live search filter. A personal site should remain 100% readable and functional even if a visitor browses with JavaScript disabled!
+          </p>
+
+          <h2 id="accessibility-seo">7. Accessibility & Technical SEO Essentials</h2>
+          <ul>
+            <li>Ensure high contrast between text and background (WCAG AA ratio &ge; 4.5:1).</li>
+            <li>Include meaningful <code>alt</code> text on all images.</li>
+            <li>Provide visible focus outlines (<code>:focus-visible</code>) for keyboard navigation.</li>
+            <li>Add Open Graph meta tags (<code>og:title</code>, <code>og:description</code>, <code>og:image</code>) so your articles look polished when shared.</li>
+          </ul>
+
+          <h2 id="git-deployment">8. Deployment via Git & Automated HTTPS</h2>
+          <p>
+            Modern static hosting platforms make deploying a personal website free, secure, and instantaneous:
+          </p>
+          <pre><code># Commit your files and push to remote:
+$ git add .
+$ git commit -m "Launch personal website v1.0"
+$ git push origin main</code></pre>
+          <p>
+            Platforms like GitHub Pages, Cloudflare Pages, or Netlify automatically detect your commit, pull the repository, provision free automated Let's Encrypt TLS certificates, and distribute your static HTML across global Anycast edge nodes in seconds.
+          </p>
+
+          <h2 id="launch-checklist">9. The 10-Step Launch Checklist</h2>
+          <ol>
+            <li>Verify document has a single <code>&lt;h1&gt;</code> and semantic landmarks.</li>
+            <li>Confirm all image tags contain explicit <code>width</code>, <code>height</code>, and descriptive <code>alt</code> text.</li>
+            <li>Test responsive layout on mobile, tablet, and desktop viewports.</li>
+            <li>Validate external links and internal navigation routes.</li>
+            <li>Ensure SSL/TLS HTTPS is enforced with automatic HTTP redirection.</li>
+            <li>Generate an <code>XML Sitemap</code> and valid <code>robots.txt</code>.</li>
+            <li>Test keyboard accessibility (Tab, Enter, Escape).</li>
+            <li>Verify dynamic copyright year updates in the footer.</li>
+            <li>Create comprehensive Privacy Policy and Disclaimer pages.</li>
+            <li>Measure Core Web Vitals to guarantee 95+ performance scores.</li>
+          </ol>
+
+          <h2 id="faqs">10. Frequently Asked Questions</h2>
+          <div class="faq-section">
+            <div class="faq-item">
+              <h3 class="faq-question">How much does it cost to run a personal website?</h3>
+              <div class="faq-answer">
+                Just the price of your domain name (typically $10 to $15 per year). Static hosting on GitHub Pages or Cloudflare Pages is completely free, with zero server maintenance costs or hosting invoices.
+              </div>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">Do I need a static site generator (SSG)?</h3>
+              <div class="faq-answer">
+                For a small site with 10 to 20 pages, pure vanilla HTML and CSS is remarkably maintainable and eliminates build dependencies. As your library expands beyond 50 articles, tools like Hugo, Zola, or Astro can automate header/footer templating.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; <span class="current-year">2026</span> Root Node. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="index.html">Home</a> <a href="blog.html">Articles</a> <a href="privacy.html">Privacy</a> <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="js/script.js"></script>
+</body>
+</html>

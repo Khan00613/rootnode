@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Computing Explained: Servers, Storage, and Services &bull; Root Node</title>
+  <meta name="description" content="A realistic engineering guide to cloud computing: hypervisors, VPC networking, object storage, availability zones, autoscaling, and egress cost realities.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+  <div id="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+      </a>
+      <nav class="primary-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link active">Articles</a>
+        <a href="blog.html?cat=technology" class="nav-link">Technology</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="blog.html" class="btn-nav-search">Search</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <header class="article-header-section">
+      <div class="container container-narrow">
+        <nav class="breadcrumb-nav">
+          <a href="index.html">Home</a> <span>/</span> <a href="blog.html">Articles</a> <span>/</span> <span>Post 11</span>
+        </nav>
+        <span class="post-category-tag">Technology // Infrastructure Engineering</span>
+        <h1 class="article-hero-title">Cloud Computing Explained: Servers, Storage, and Services</h1>
+        <p class="article-standfirst">
+          There is no "cloud"—it is simply someone else's computers, orchestrated through API-driven virtualization fabrics and billed by the second. Here is how modern multi-tenant cloud platforms operate.
+        </p>
+        <div class="article-meta-row">
+          <div class="author-chip">
+            <span class="author-name">By Julian Vance</span> <span>&bull; Senior Systems Architect</span>
+          </div>
+          <div>
+            <time datetime="2026-09-02">September 02, 2026</time> <span>&bull;</span> <span>16 min read</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="article-hero-image-wrap">
+        <figure>
+          <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80" alt="Global cloud datacenter connectivity lines">
+          <figcaption>Figure 1: Global multi-tenant cloud fabrics: interconnecting hypervisors across geographic regions.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="article-layout-grid">
+        <aside class="toc-sidebar">
+          <h2 class="toc-heading">Table of Contents</h2>
+          <ul class="toc-list">
+            <li><a href="#what-is-cloud" class="toc-link">1. Deconstructing the Cloud Metaphor</a></li>
+            <li><a href="#virtualization-layer" class="toc-link">2. Hypervisors & Multi-Tenancy</a></li>
+            <li><a href="#storage-archetypes" class="toc-link">3. Block vs File vs Object Storage</a></li>
+            <li><a href="#compute-models" class="toc-link">4. IaaS, PaaS, and Serverless FaaS</a></li>
+            <li><a href="#cloud-networking" class="toc-link">5. VPCs, Subnets & Routing</a></li>
+            <li><a href="#regions-azs" class="toc-link">6. Regions & Availability Zones</a></li>
+            <li><a href="#scalability-elasticity" class="toc-link">7. Scalability vs. Elasticity</a></li>
+            <li><a href="#shared-responsibility" class="toc-link">8. The Shared Security Model</a></li>
+            <li><a href="#faqs" class="toc-link">9. Frequently Asked Questions</a></li>
+          </ul>
+        </aside>
+
+        <article class="prose-content">
+          <h2 id="what-is-cloud">1. Deconstructing the Cloud Metaphor</h2>
+          <p>
+            Before the advent of cloud computing, deploying software meant purchasing physical rack servers, waiting four weeks for shipping, physically racking the hardware in a leased colocation facility, wiring redundant power distribution units, and configuring network switches.
+          </p>
+          <p>
+            Cloud computing transforms physical capital expenses into operational utility expenses. Instead of buying hardware, you make an authenticated API call (or Terraform command), and a virtual machine boots within 30 seconds.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" alt="Cold aisle containment in enterprise datacenter">
+            <figcaption>Figure 2: Physical server racks: the industrial compute infrastructure behind cloud virtualization APIs.</figcaption>
+          </figure>
+
+          <h2 id="virtualization-layer">2. Hypervisors & Multi-Tenancy</h2>
+          <p>
+            How do multiple competing companies run software on the identical physical server without interfering with one another? Through <strong>Type 1 Bare-Metal Hypervisors</strong> (such as Linux KVM or AWS Nitro).
+          </p>
+          <p>
+            The hypervisor runs directly on the server's bare silicon, partitioning the physical CPUs, RAM, and PCIe buses into isolated <strong>Virtual Machines (VMs)</strong>. Hardware virtualization extensions (Intel VT-x, AMD-V) enforce memory isolation at the CPU hardware level.
+          </p>
+
+          <h2 id="storage-archetypes">3. The Three Storage Archetypes</h2>
+          <p>
+            Cloud platforms categorize storage into three distinct architectures:
+          </p>
+          <ul>
+            <li><strong>Block Storage (e.g., AWS EBS):</strong> Virtual hard drives attached over high-speed networks. The operating system formats it with a native filesystem (ext4, XFS). Essential for databases.</li>
+            <li><strong>Object Storage (e.g., AWS S3, Cloudflare R2):</strong> Highly distributed, infinitely scalable flat key-value storage. Files are accessed via HTTP REST APIs. Essential for images, backups, and static website hosting.</li>
+            <li><strong>File Storage (e.g., NFS, AWS EFS):</strong> Managed shared filesystems concurrently mountable by hundreds of VMs.</li>
+          </ul>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80" alt="Fiber cabling interconnecting cloud availability zones">
+            <figcaption>Figure 3: Dedicated fiber conduits linking redundant availability zones within cloud regions.</figcaption>
+          </figure>
+
+          <h2 id="compute-models">4. The Compute Spectrum: IaaS, PaaS, and Serverless</h2>
+          <p>
+            Cloud architectures offer varying levels of abstraction:
+          </p>
+          <ul>
+            <li><strong>IaaS (Infrastructure as a Service):</strong> Raw VMs (EC2, Compute Engine). Maximum control, but you are responsible for OS updates, security patches, and kernel tuning.</li>
+            <li><strong>PaaS (Platform as a Service):</strong> Heroku, Render, Fly.io. You provide source code or a container; the platform manages routing, OS updates, and scaling.</li>
+            <li><strong>Serverless (FaaS):</strong> AWS Lambda, Cloudflare Workers. Event-driven execution of individual functions billed strictly by memory and millisecond execution time.</li>
+          </ul>
+
+          <h2 id="cloud-networking">5. Virtual Private Clouds (VPCs) & Routing</h2>
+          <p>
+            A <strong>Virtual Private Cloud (VPC)</strong> is your isolated virtual network. Best practice mandates dividing VPCs into:
+          </p>
+          <ul>
+            <li><strong>Public Subnets:</strong> Host Internet Gateways and Load Balancers accessible from the public internet.</li>
+            <li><strong>Private Subnets:</strong> Host application servers and database clusters with zero direct public IP addresses, routing outbound traffic through a NAT Gateway for security.</li>
+          </ul>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" alt="Terminal terminal displaying infrastructure-as-code cloud configuration">
+            <figcaption>Figure 4: Provisioning declarative cloud infrastructure using command-line automation.</figcaption>
+          </figure>
+
+          <h2 id="regions-azs">6. Regions & Availability Zones</h2>
+          <p>
+            A <strong>Region</strong> is a distinct geographic area (e.g., <code>us-east-1</code> in Northern Virginia or <code>eu-central-1</code> in Frankfurt).
+          </p>
+          <p>
+            Each region contains multiple <strong>Availability Zones (AZs)</strong>. An AZ is one or more discrete datacenters equipped with independent power substations, cooling generators, and physical security, linked to neighboring AZs via ultra-low-latency private fiber. Designing a system to span at least two AZs protects against physical datacenter fires or localized power grid blackouts.
+          </p>
+
+          <h2 id="scalability-elasticity">7. Scalability vs Elasticity</h2>
+          <p>
+            <strong>Scalability</strong> is the capability of a system to handle increased load by adding resources (Vertical scaling by adding CPU/RAM to a box, or Horizontal scaling by adding more boxes).
+          </p>
+          <p>
+            <strong>Elasticity</strong> is the degree to which a system can automatically adapt its capacity in real-time in response to dynamic load changes—spinning up 50 nodes during a Black Friday flash sale and automatically destroying them at midnight to prevent unnecessary compute bills.
+          </p>
+
+          <h2 id="shared-responsibility">8. The Shared Responsibility Security Model</h2>
+          <p>
+            Cloud security is a strict shared contract:
+          </p>
+          <ul>
+            <li><strong>Provider Responsibility ("Security OF the Cloud"):</strong> Physical datacenter security, hypervisor patching, server firmware, and network hardware.</li>
+            <li><strong>Customer Responsibility ("Security IN the Cloud"):</strong> Customer data, firewall rules (Security Groups), operating system patches on VMs, IAM permissions, and application code.</li>
+          </ul>
+
+          <h2 id="faqs">9. Frequently Asked Questions</h2>
+          <div class="faq-section">
+            <div class="faq-item">
+              <h3 class="faq-question">Why can cloud bills unexpectedly skyrocket?</h3>
+              <div class="faq-answer">
+                Compute instances are cheap, but <strong>egress bandwidth</strong> (data leaving the cloud provider to the internet) and unmonitored serverless invocation loops can generate tens of thousands of dollars in surprise charges. Always configure billing alerts and budget quotas on day one.
+              </div>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">What is "Vendor Lock-in"?</h3>
+              <div class="faq-answer">
+                Vendor lock-in occurs when an architecture relies heavily on proprietary cloud services (like DynamoDB or Cloud Spanner) that cannot be easily migrated to another cloud provider or self-hosted hardware without a complete application rewrite.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; <span class="current-year">2026</span> Root Node. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="index.html">Home</a> <a href="blog.html">Articles</a> <a href="privacy.html">Privacy</a> <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="js/script.js"></script>
+</body>
+</html>

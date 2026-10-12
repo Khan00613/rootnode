@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What Is Two-Factor Authentication? A Practical Security Guide &bull; Root Node</title>
+  <meta name="description" content="A comprehensive security breakdown of Two-Factor Authentication (2FA): TOTP RFC 6238 mechanics, SMS vulnerabilities, FIDO2 hardware keys, and passkeys.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+  <div id="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-wrapper">
+        <span class="brand-symbol">/</span>
+        <span class="brand-name">Root Node</span>
+      </a>
+      <nav class="primary-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link active">Articles</a>
+        <a href="blog.html?cat=cybersecurity" class="nav-link">Cybersecurity</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="blog.html" class="btn-nav-search">Search</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <header class="article-header-section">
+      <div class="container container-narrow">
+        <nav class="breadcrumb-nav">
+          <a href="index.html">Home</a> <span>/</span> <a href="blog.html">Articles</a> <span>/</span> <span>Post 13</span>
+        </nav>
+        <span class="post-category-tag">Cybersecurity // Identity Verification</span>
+        <h1 class="article-hero-title">What Is Two-Factor Authentication? A Practical Security Guide</h1>
+        <p class="article-standfirst">
+          Passwords alone are obsolete. But not all two-factor mechanisms offer equal security. Here is how SMS, TOTP authenticator algorithms, and FIDO2 hardware passkeys compare in the real world.
+        </p>
+        <div class="article-meta-row">
+          <div class="author-chip">
+            <span class="author-name">By Julian Vance</span> <span>&bull; Senior Systems Architect</span>
+          </div>
+          <div>
+            <time datetime="2026-08-22">August 22, 2026</time> <span>&bull;</span> <span>15 min read</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="article-hero-image-wrap">
+        <figure>
+          <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1600&q=80" alt="Hardware two-factor security token on desk">
+          <figcaption>Figure 1: Hardware physical tokens: implementing cryptographic proof of possession during authentication.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="article-layout-grid">
+        <aside class="toc-sidebar">
+          <h2 class="toc-heading">Table of Contents</h2>
+          <ul class="toc-list">
+            <li><a href="#auth-vs-authz" class="toc-link">1. Authentication vs Authorization</a></li>
+            <li><a href="#three-factors" class="toc-link">2. The Three Factors of Identity</a></li>
+            <li><a href="#sms-flaws" class="toc-link">3. The Fatal Flaws of SMS Codes</a></li>
+            <li><a href="#totp-math" class="toc-link">4. Time-Based OTP (RFC 6238)</a></li>
+            <li><a href="#fido2-keys" class="toc-link">5. FIDO2 & Hardware Security Keys</a></li>
+            <li><a href="#passkeys-future" class="toc-link">6. The Rise of Passkeys</a></li>
+            <li><a href="#backup-recovery" class="toc-link">7. Backup Codes & Device Loss</a></li>
+            <li><a href="#faqs" class="toc-link">8. Frequently Asked Questions</a></li>
+          </ul>
+        </aside>
+
+        <article class="prose-content">
+          <h2 id="auth-vs-authz">1. Authentication vs. Authorization</h2>
+          <p>
+            Before exploring factors, we must distinguish two related concepts:
+          </p>
+          <ul>
+            <li><strong>Authentication (AuthN):</strong> Verifying <em>who you are</em> (e.g., proving identity through credentials).</li>
+            <li><strong>Authorization (AuthZ):</strong> Determining <em>what you are permitted to do</em> (e.g., verifying whether your authenticated account has administrator privileges to modify a database).</li>
+          </ul>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80" alt="Secure biometric hardware pad">
+            <figcaption>Figure 2: Multi-factor verification combining biometric inherence and hardware possession.</figcaption>
+          </figure>
+
+          <h2 id="three-factors">2. The Three Classical Factors of Identity</h2>
+          <p>
+            True Multi-Factor Authentication requires presenting proofs from at least two distinct categories:
+          </p>
+          <ol>
+            <li><strong>Knowledge Factor (Something you know):</strong> Passwords, PINs, passphrases.</li>
+            <li><strong>Possession Factor (Something you have):</strong> Hardware security key, smartphone with authenticator app, smart card.</li>
+            <li><strong>Inherence Factor (Something you are):</strong> Fingerprint, facial recognition, retina scan.</li>
+          </ol>
+          <p>
+            Entering a password followed by your mother's maiden name is <em>not</em> two-factor authentication—it is simply two instances of the knowledge factor!
+          </p>
+
+          <h2 id="sms-flaws">3. The Fatal Flaws of SMS Verification</h2>
+          <p>
+            SMS text codes are widely deployed because every cellular telephone supports them without installing software. However, from a security engineering standpoint, SMS is the weakest form of 2FA:
+          </p>
+          <ul>
+            <li><strong>SIM Swapping:</strong> Attackers impersonate you at a mobile carrier store or bribe customer service representatives to reassign your phone number to an attacker-controlled SIM card, intercepting all your codes.</li>
+            <li><strong>SS7 Signaling Flaws:</strong> The global telecom signaling network (SS7) has known architectural interception vulnerabilities allowing sophisticated adversaries to divert SMS messages over the wire.</li>
+          </ul>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" alt="Terminal session calculating cryptographic HMAC hashes">
+            <figcaption>Figure 3: Calculating HMAC SHA-1 timestamp counters in the TOTP algorithmic pipeline.</figcaption>
+          </figure>
+
+          <h2 id="totp-math">4. Time-Based One-Time Passwords (TOTP - RFC 6238)</h2>
+          <p>
+            Authenticator apps (such as Aegis, Ente Auth, Google Authenticator) operate offline without cellular connectivity.
+          </p>
+          <p>
+            When you scan the setup QR code, the service shares a <strong>shared secret key (seed)</strong>. Every 30 seconds, both your phone and the server take the current Unix timestamp divided by 30, run an <code>HMAC-SHA1</code> hash with the shared secret, and truncate the output into a 6-digit numerical code. Because the math is computed independently on both ends, no network transmission of the seed ever occurs.
+          </p>
+
+          <h2 id="fido2-keys">5. FIDO2 & Hardware Security Keys: True Phishing Immunity</h2>
+          <p>
+            While TOTP is vastly superior to SMS, it can still be defeated by real-time reverse-proxy phishing kits (like Evilginx). If an attacker lures you to a fake phishing site, the attacker captures your 6-digit TOTP code and replays it to the real service within the 30-second window.
+          </p>
+          <p>
+            <strong>FIDO2 / WebAuthn Hardware Keys (YubiKey)</strong> eliminate this vector. The hardware key cryptographically binds its authentication signature to the browser's exact TLS origin domain (<code>origin: "https://rootnode.dev"</code>). If you plug your key into a phishing domain, the cryptographic signature fails, providing 100% mathematical immunity against phishing.
+          </p>
+
+          <figure>
+            <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=1200&q=80" alt="Encrypted security vault representing hardware passkey storage">
+            <figcaption>Figure 4: Secure enclave silicon chips generating asymmetric passkey pairs.</figcaption>
+          </figure>
+
+          <h2 id="passkeys-future">6. The Rise of Passkeys</h2>
+          <p>
+            Built on the FIDO2 WebAuthn standard, <strong>Passkeys</strong> replace passwords entirely with asymmetric public-key cryptography. Your device's Secure Enclave generates a private key that never leaves your hardware, while the server stores only your public key. Authentication requires only a fingerprint or facial scan.
+          </p>
+
+          <h2 id="backup-recovery">7. Backup Codes & Device Loss Protocols</h2>
+          <p>
+            Whenever you configure 2FA on any critical service, the platform generates a list of 10 single-use <strong>Backup Recovery Codes</strong>. You must print these codes or save them inside an encrypted password vault. If your phone is lost, submerged in water, or stolen, recovery codes represent your only lifeline back into your account.
+          </p>
+
+          <h2 id="faqs">8. Frequently Asked Questions</h2>
+          <div class="faq-section">
+            <div class="faq-item">
+              <h3 class="faq-question">What is "MFA Fatigue" (Push Bombing)?</h3>
+              <div class="faq-answer">
+                An attack vector where an adversary with your stolen password triggers dozens of continuous push notifications to your smartphone in the middle of the night, hoping you will blindly tap "Approve" out of frustration or fatigue. Modern systems counter this with number matching.
+              </div>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">Can I use multiple YubiKeys on the same account?</h3>
+              <div class="faq-answer">
+                Yes! Industry best practice is to register at least two hardware keys: a primary key on your everyday keychain, and an identical backup key stored safely in your home safe.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; <span class="current-year">2026</span> Root Node. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="index.html">Home</a> <a href="blog.html">Articles</a> <a href="privacy.html">Privacy</a> <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="js/script.js"></script>
+</body>
+</html>
